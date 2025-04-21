@@ -1,6 +1,6 @@
 #!/bin/bash
 
-IMAGE_NAME=webprog1-ea
+IMAGE_NAME=webprog1ea
 PORT=8111
 
 echo "Konténer éptése..."

@@ -1,4 +1,4 @@
-import { webStorage } from "./webStorage";
+import webStorage from "./webStorage";
 
 // Étterem típusok
 const restaurantTypes = [

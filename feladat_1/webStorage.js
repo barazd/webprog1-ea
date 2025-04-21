@@ -1,4 +1,4 @@
-export class webStorage {
+export default class webStorage {
     constructor(storeName, initialData) {
         this.storeName = storeName;
 
