@@ -2,7 +2,7 @@ export default class webStorage extends EventTarget {
     
     constructor(storeName, initialData) {
         super();
-        
+
         this.storeName = storeName;
 
         // Ha nem létezik létrehozzuk
@@ -49,6 +49,10 @@ export default class webStorage extends EventTarget {
 
     updateEvent(data) {
         this.emit("updated", data);
+    }
+
+    destroy() {
+        localStorage.removeItem(this.storeName);
     }
 
     // CRUD + index
