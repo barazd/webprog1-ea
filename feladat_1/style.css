@@ -25,12 +25,14 @@ html, body {
 }
 
 header {
+    background: darkslategray;
+    color: azure;
+}
+header .header {
     display: flex;
     flex-direction: column;
     gap: 1rem;
     padding: 1rem;
-    background: darkslategray;
-    color: azure;
 }
 header h1 {
     font-size: 2rem;
@@ -74,6 +76,9 @@ header nav ul li a.newpage::after {
 }
 
 section {
+    display: flex;
+}
+section .section {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
 }
@@ -85,12 +90,14 @@ section aside {
 }
 
 footer {
-    display: flex;
-    justify-content: space-between;
-    padding: 1rem;
     font-size: .8rem;
     background: darkslategray;
     color: azure;
+}
+footer .footer { 
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
 }
 footer .by {
     background: black;
@@ -100,7 +107,12 @@ footer .by {
     border-radius: 50vh;
 }
 
-/* Egyéb elremek */
+.mw-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Egyéb elemek */
 .box {
     display: flex;
     flex-direction: column;
