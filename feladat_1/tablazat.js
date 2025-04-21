@@ -1,4 +1,4 @@
-import webStorage from "./webStorage";
+import webStorage from './webStorage.js';
 
 // Étterem típusok
 const restaurantTypes = [
@@ -24,4 +24,21 @@ const initialData = [
     { id: crypto.randomUUID(), name: 'Jal Mahal Falatozó', city: 'Budapest III.', type: 6, rating: 8 },
 ];
 
+// Táblázat kirajzolása
+function renderTable(data) {
+    const table = document.querySelector('#restaurants > tbody');
+
+    table.innerHTML = data.reduce((html, item) => html + '<tr>' + Object.keys(item).reduce((row, key) => row + `<td>${item[key]}</td>`, '') + '</tr>', '');
+}
+
+// Storage megoldás
 const store = new webStorage('webprog1-ea', initialData);
+
+// Ha betöltődött az oldal
+document.addEventListener("DOMContentLoaded", () => {
+    renderTable(store.getItems());
+
+    store.on("updated", () => {
+        renderTable(store.getItems());
+    });
+});
