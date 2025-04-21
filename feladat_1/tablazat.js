@@ -24,11 +24,23 @@ const initialData = [
     { id: crypto.randomUUID(), name: 'Jal Mahal Falatozó', city: 'Budapest III.', type: 6, rating: 8 },
 ];
 
-// Táblázat kirajzolása
-function renderTable(data) {
-    const table = document.querySelector('#restaurants > tbody');
+// Táblázat struktúrája
+const tableStructure = [
+    { title: 'ID', key: 'id', sortable: true, format: (data) => `<code>${data.split('-')[0]}</code>` },
+    { title: 'Étterem neve', key: 'name', sortable: true, format: (data) => `<strong>${data}</strong>` },
+    { title: 'Település', key: 'city',  sortable: true },
+    { title: 'Típus', key: 'type', format: (data) => restaurantTypes.find((item) => item.id === data).title },
+    { title: 'Értékelés', key: 'rating',  sortable: true, format: (data) => `${data}/10` },
+];
 
-    table.innerHTML = data.reduce((html, item) => html + '<tr>' + Object.keys(item).reduce((row, key) => row + `<td>${item[key]}</td>`, '') + '</tr>', '');
+// Táblázat kirajzolása
+function renderTable(data, structure) {
+    const table = document.querySelector('#restaurants');
+    // Fejléc renderelése
+    table.querySelector('thead').innerHTML = '<tr>' + structure.reduce((row, kind) => row + `<th>${kind.title}</th>`, '') + '</tr>';
+
+    // Tartalom renderelése
+    table.querySelector('tbody').innerHTML = data.reduce((html, item) => html + '<tr>' + structure.reduce((row, kind) => row + `<td>${kind.format ? kind.format(item[kind.key]): item[kind.key]}</td>`, '') + '</tr>', '');
 }
 
 // Storage megoldás
@@ -36,9 +48,9 @@ const store = new webStorage('webprog1-ea', initialData);
 
 // Ha betöltődött az oldal
 document.addEventListener("DOMContentLoaded", () => {
-    renderTable(store.getItems());
+    renderTable(store.getItems(), tableStructure);
 
     store.on("updated", () => {
-        renderTable(store.getItems());
+        renderTable(store.getItems(), tableStructure);
     });
 });
