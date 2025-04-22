@@ -37,7 +37,7 @@ const tableStructure = [
 function renderTable(data, structure) {
     const table = document.querySelector('#restaurants');
     // Fejléc renderelése
-    table.querySelector('thead').innerHTML = '<tr>' + structure.reduce((row, kind) => row + `<th class="${kind.sortable ? 'sortable' : ''} ${kind.order || ''}">${kind.title}</th>`, '') + '</tr>';
+    table.querySelector('thead').innerHTML = '<tr>' + structure.reduce((row, kind) => row + `<th class="${kind.sortable ? 'sortable' : ''} ${kind.order || ''}" data-key="${kind.key}" onclick="sortTable(this)">${kind.title}</th>`, '') + '</tr>';
 
     // Tartalom sorbarendezése
     const orderBy = structure.find((item) => item.order);
@@ -51,10 +51,49 @@ function renderTable(data, structure) {
 const store = new webStorage('webprog1-ea', initialData);
 
 // Ha betöltődött az oldal
-document.addEventListener("DOMContentLoaded", () => {
+//document.addEventListener('DOMContentLoaded', () => {
     renderTable(store.getItems(), tableStructure);
 
     store.on("updated", () => {
         renderTable(store.getItems(), tableStructure);
     });
-});
+
+// Sorbarendezés
+export const sortTable = (el) => {
+    console.log('hopp');
+    const col = tableStructure.find((item) => item.key === el.dataset.key);
+
+    if (!col.order) { // Ha nem ez volt eddig sorbarendezve
+        delete tableStructure.find((item) => item.order).order;
+        col.order = 'asc';
+    } else if (col.order === 'asc') { // Ha ez volt növekvőben
+        col.order = 'desc';
+    }
+    else { // Ha ez volt csökkenőben
+        col.order = 'asc';
+    }
+    renderTable(store.getItems(), tableStructure);
+}
+
+    // Sorbarendezés
+    const table = document.querySelector('#restaurants thead');
+    Array.from(document.getElementsByClassName('.sortable')).forEach((el) => {
+    //document.querySelectorAll('#restaurants th.sortable').forEach((el) => {
+        
+        console.log(el);
+        el.addEventListener('click', () => {
+            console.log('hopp');
+            const col = tableStructure.find((item) => item.key === el.dataset.key);
+            if (!col.order) { // Ha nem ez volt eddig sorbarendezve
+                delete tableStructure.find((item) => item.order).order;
+                col.order = 'asc';
+            } else if (col.order === 'asc') { // Ha ez volt növekvőben
+                col.order = 'desc';
+            }
+            else { // Ha ez volt csökkenőben
+                col.order = 'asc';
+            }
+            renderTable(store.getItems(), tableStructure);
+        });
+    });
+//});//
