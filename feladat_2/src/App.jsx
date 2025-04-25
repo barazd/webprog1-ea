@@ -1,7 +1,7 @@
 import { Link, Route, Switch, Redirect, useLocation } from 'wouter'
 
 import TalaldKi from './components/TalaldKi'
-import Jatek2048 from './components/Jatek2048'
+import Aknakereso from './components/Aknakereso'
 
 import '../../feladat_1/style.css'
 import './App.css'
@@ -34,7 +34,7 @@ function App() {
                             <div className="tabs">
                                 <span><em>Válassz játékot &rarr;</em></span>
                                 <Link href="/talald-ki" className={location === "/talald-ki" ? 'active' : ''}>Találd ki</Link>
-                                <Link href="/2048" className={location === "/2048" ? 'active' : ''}>2048</Link>
+                                <Link href="/aknakereso" className={location === "/aknakereso" ? 'active' : ''}>Aknakereső</Link>
                             </div>
 
                             <Switch>
@@ -44,7 +44,7 @@ function App() {
 
                                 <Route path="/talald-ki" component={TalaldKi} />
 
-                                <Route path="/2048" component={Jatek2048} />
+                                <Route path="/aknakereso" component={Aknakereso} />
 
                                 /* Alapértelmezett útvonal */
                                 <Route>

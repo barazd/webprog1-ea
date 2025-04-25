@@ -120,3 +120,33 @@ ul.messages li.wrong::before {
     70% { transform: translateY(5px) }
     100% { transform: translateY(0) }
 }
+
+/* Aknakereső */
+.minefield {
+    display: flex;
+    flex-direction: column;
+    border-collapse: collapse;
+}
+.minefield .row {
+    display: flex;
+    flex-direction: row;
+    border-collapse: collapse;
+}
+.minefield .row .field {
+    display: flex;
+    width: 1.4rem;
+    height: 1.4rem;
+    border: .5px solid gray;
+    border-collapse: collapse;
+    background: lightgray;
+}
+.minefield .row .field:hover {
+    cursor: pointer;
+    background: white;
+}
+.minefield .row .field.hide span {
+    display: none;
+}
+.minefield .row .field.show {
+    background: white;
+}
