@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react'
 
 function Kartya(props) {
+    const [felforditva, setAllapot] = useState(props.felforditva)
+
     return (
         <>
-            <div>
-                <p>Kártya: {props.kartya}</p>
+            <div className={'card ' + (felforditva ? 'face' : 'back')} onClick={() => setAllapot(true)}>
+                <p>{felforditva ? props.kartya : '??'}</p>
             </div>
         </>
     )
@@ -26,7 +28,7 @@ export default function TalaldKi() {
         // Kártyákat húzunk
         let i = 0
         while (i < kartyakSzama) {
-            const kartya = `${szinek[Math.floor(Math.random() * szinek.length)]}${szamok[Math.floor(Math.random() * szamok.length)]}`
+            let kartya = `${szinek[Math.floor(Math.random() * szinek.length)]}${szamok[Math.floor(Math.random() * szamok.length)]}`
             if (!kartyak.includes(kartya)) {
                 setKartyak(prevState => [...prevState, kartya])
                 i++
@@ -34,6 +36,7 @@ export default function TalaldKi() {
         }
 
         // Kiválasztjuk a kártyát
+        setValasztott(Math.floor(Math.random() * kartyak.length))
     }
 
     // Ez elvileg olyan, mint az onMounted
@@ -46,17 +49,23 @@ export default function TalaldKi() {
         <>
             <div className="box">
                 <h2>Találd ki!</h2>
-                <p>Az alábbi négy kártyából húzd ki azt a kártyát, amit választottam!</p>
+                <p>Húztam {kartyakSzama} kártyát, találd ki melyiket választottam!</p>
                 <p><button onClick={ujJatek}>Új játék!</button></p>
+                <div className="draw">
+                    {kartyak.map((kartya, i) => {
+                        return (<Kartya key={i} kartya={kartya} felforditva={false} />)
+                    })}
+                </div>
             </div>
 
             <div className="box">
                 <h2>Debug</h2>
-                <ul>
-                    {kartyak.map((kartya) => {
-                        return (<Kartya key={kartya} kartya={kartya} />)
+                <h3>Pakli:</h3>
+                    {kartyak.map((kartya, i) => {
+                        return (<Kartya key={i} kartya={kartya} felforditva={true} />)
                     })}
-                </ul>
+                <h3>Kiválasztott kártya</h3>
+                <Kartya kartya={kartyak[valasztott]} felforditva={true} />
             </div>
         </>
     )
