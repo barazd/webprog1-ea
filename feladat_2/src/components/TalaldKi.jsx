@@ -1,29 +1,47 @@
 import React, { useState, useEffect } from 'react'
 
 function Kartya(props) {
-    const [felforditva, setAllapot] = useState(props.felforditva)
+    const [selected, setSelected] = useState(false)
+
+    // Reseteljük a state-t, ha új kártyát húz a rendszer
+    useEffect(() => {
+        setSelected(false)
+    }, [props.kartya])
+
+    function huzas() {
+        // Ha már fel volt húzva, nem csinál semmit...
+        if (!selected) {
+            setSelected(true)
+            props.felhuzva(props.nyertes) // Ez elvileg olyan, mint az emit
+        }
+    }
 
     return (
         <>
-            <div className={'card ' + (felforditva ? 'face' : 'back')} onClick={() => setAllapot(true)}>
-                <p>{felforditva ? props.kartya : '??'}</p>
+            <div className={'card' + (selected ? ' selected' + (props.nyertes ? ' winner' : ' wrong') : '')} onClick={huzas}>
+                <div>{props.kartya}</div>
+                <div>{props.kartya}</div>
             </div>
         </>
     )
 }
 
 export default function TalaldKi() {
-    const [kartyakSzama, setKartyakSzama] = useState(4)
+    const kartyakSzama = 6
     const [kartyak, setKartyak] = useState([])
     const [valasztott, setValasztott] = useState(0)
+    const [uzenetek, setUzenetek] = useState([])
+    const [probalkozasok, setProbalkozasok] = useState(0)
 
     const szinek = ['♣️', '♠️', '♥️', '♦️'] // remélem működik az emoji
     const szamok = ['A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K']
 
     function ujJatek() {
         console.log("Új játék kezdése...")
-        // Kiürítjük a húzott kártyákat
+        // Kiürítjük a húzott kártyákat stb
         setKartyak([])
+        setProbalkozasok(0)
+        setUzenetek([])
 
         // Kártyákat húzunk
         let i = 0
@@ -39,6 +57,21 @@ export default function TalaldKi() {
         setValasztott(Math.floor(Math.random() * kartyak.length))
     }
 
+    function handleHuzas(eredmeny) {
+        if (eredmeny) {
+            if (probalkozasok === 0) {
+                setUzenetek(prevState => [...prevState, `Váó, elsőre eltaláltad a kártyát!`])
+            }
+            else {
+                setUzenetek(prevState => [...prevState,`Gratulálok, ${probalkozasok + 1}. próbálkozásra eltaláltad a kártyát!`])
+            }
+        }
+        else {
+            setUzenetek(prevState => [...prevState, `Sajnos nem sikerült... ${probalkozasok === 0 ? `De ne csüggedj, segítek: ${kartyak[valasztott].startsWith('♣️') || kartyak[valasztott].startsWith('♠️') ? 'feketét' : 'pirosat'} választottam!` : (probalkozasok === 1 ? `Még egy kis segítség: ${Number.isNaN(parseInt(kartyak[valasztott].charAt(kartyak[valasztott].length - 1))) ? 'betűs' : 'számos'} kártyát választottam.` : `Többet nem segítek, már csak ${kartyakSzama - probalkozasok - 1} kártya van hátra.`)}`])
+            setProbalkozasok(probalkozasok + 1)
+        }
+    }
+
     // Ez elvileg olyan, mint az onMounted
     useEffect(() => {
         console.log('auto húzás')
@@ -50,20 +83,27 @@ export default function TalaldKi() {
             <div className="box">
                 <h2>Találd ki!</h2>
                 <p>Húztam {kartyakSzama} kártyát, találd ki melyiket választottam!</p>
-                <p><button onClick={ujJatek}>Új játék!</button></p>
                 <div className="draw">
                     {kartyak.map((kartya, i) => {
-                        return (<Kartya key={i} kartya={kartya} felforditva={false} />)
+                        return (<Kartya key={i} kartya={kartya} nyertes={i === valasztott} felhuzva={handleHuzas} />)
                     })}
                 </div>
+                <ul className="messages">
+                    {uzenetek.map((uzenet, i) => {
+                        return (<ul key={i}>{uzenet}</ul>)
+                    })}
+                </ul>
+                <p><button onClick={ujJatek}>Új játék!</button></p>
             </div>
 
             <div className="box">
                 <h2>Debug</h2>
                 <h3>Pakli:</h3>
+                <div className="draw">
                     {kartyak.map((kartya, i) => {
                         return (<Kartya key={i} kartya={kartya} felforditva={true} />)
                     })}
+                </div>
                 <h3>Kiválasztott kártya</h3>
                 <Kartya kartya={kartyak[valasztott]} felforditva={true} />
             </div>
