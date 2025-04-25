@@ -1,12 +1,12 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { Link, Route, Switch, Redirect } from 'wouter'
+
+import TalaldKi from './components/TalaldKi'
+import Jatek2048 from './components/Jatek2048'
+
 import '../../feladat_1/style.css'
 import './App.css'
 
 function App() {
-    const [count, setCount] = useState(0)
-
     return (
         <>
             <div className="wrapper">
@@ -21,7 +21,7 @@ function App() {
                                 <li><a href="/chartjs.html" target="_blank" className="newpage">ChartJS</a></li>
                                 <li><a href="/ajax.html" target="_blank" className="newpage">AJAX</a></li>
                                 <li><a href="/oojs.html" target="_blank" className="newpage">OOJS</a></li>
-                                <li><a href="/feladat_2/index.html" className="active" >React</a></li>
+                                <li><a href="/" className="active" >React</a></li>
                             </ul>
                         </nav>
                     </div>
@@ -29,10 +29,28 @@ function App() {
                 <section>
                     <div className="mw-container section">
                         <div className="content">
-                            <div className="box">
-                                <h2>React</h2>
-                                <p>Kérem válasszon a menüpontok közül...</p>
+                            <div className="tabs">
+                                <Link href="/talald-ki">Találd ki</Link>
+                                <Link href="/2048">2048</Link>
                             </div>
+
+                            <Switch>
+                                <Route path="/">
+                                    <Redirect to="/talald-ki" />
+                                </Route>
+
+                                <Route path="/talald-ki" component={TalaldKi} />
+
+                                <Route path="/2048" component={Jatek2048} />
+
+                                /* Alapértelmezett útvonal */
+                                <Route>
+                                    <div className="box">
+                                        <h2>404-es hiba</h2>
+                                        <p>Az oldal nem található!</p>
+                                    </div>
+                                </Route>
+                            </Switch>
                         </div>
                         <aside>
                             <div className="box">
