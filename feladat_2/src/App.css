@@ -7,6 +7,34 @@
     display: none;
 }
 
+.tabs {
+    display: flex;
+    margin: 1rem 1rem -1rem 0;
+    gap: .3rem;
+}
+.tabs a {
+    display: inline-flex;
+    padding: .5rem 1rem;
+    text-decoration: none;
+    border-radius: .5rem .5rem 0 0;
+    color: white;
+}
+.tabs span {
+    display: inline-flex;
+    padding: .5rem 1rem;
+    color: lightsteelblue;
+}
+.tabs a.active {
+    background: azure;
+    color: black;
+    font-weight: bold;
+}
+.tabs a:hover:not(.active) {
+    background: cadetblue;
+    text-decoration: dashed;
+    color: black;
+}
+
 /* Kártyás játék */
 .draw {
     display: flex;

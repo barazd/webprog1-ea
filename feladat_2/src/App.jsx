@@ -1,4 +1,4 @@
-import { Link, Route, Switch, Redirect } from 'wouter'
+import { Link, Route, Switch, Redirect, useLocation } from 'wouter'
 
 import TalaldKi from './components/TalaldKi'
 import Jatek2048 from './components/Jatek2048'
@@ -7,6 +7,8 @@ import '../../feladat_1/style.css'
 import './App.css'
 
 function App() {
+    const [location] = useLocation()
+
     return (
         <>
             <div className="wrapper">
@@ -15,12 +17,12 @@ function App() {
                         <h1>Web-programozás-1 Előadás Házi feladat</h1>
                         <nav>
                             <ul>
-                                <li><a href="/index.html" target="_blank" className="newpage">Kezdőlap</a></li>
-                                <li><a href="/tablazat.html" target="_blank" className="newpage">Táblázat</a></li>
-                                <li><a href="/html5.html" target="_blank" className="newpage">HTML5</a></li>
-                                <li><a href="/chartjs.html" target="_blank" className="newpage">ChartJS</a></li>
-                                <li><a href="/ajax.html" target="_blank" className="newpage">AJAX</a></li>
-                                <li><a href="/oojs.html" target="_blank" className="newpage">OOJS</a></li>
+                                <li><a href="https://webprog1-ea-f1.baraz.hu/index.html" target="_blank" className="newpage">Kezdőlap</a></li>
+                                <li><a href="https://webprog1-ea-f1.baraz.hu/tablazat.html" target="_blank" className="newpage">Táblázat</a></li>
+                                <li><a href="https://webprog1-ea-f1.baraz.hu/html5.html" target="_blank" className="newpage">HTML5</a></li>
+                                <li><a href="https://webprog1-ea-f1.baraz.hu/chartjs.html" target="_blank" className="newpage">ChartJS</a></li>
+                                <li><a href="https://webprog1-ea-f1.baraz.hu/ajax.html" target="_blank" className="newpage">AJAX</a></li>
+                                <li><a href="https://webprog1-ea-f1.baraz.hu/oojs.html" target="_blank" className="newpage">OOJS</a></li>
                                 <li><a href="/" className="active" >React</a></li>
                             </ul>
                         </nav>
@@ -30,8 +32,9 @@ function App() {
                     <div className="mw-container section">
                         <div className="content">
                             <div className="tabs">
-                                <Link href="/talald-ki">Találd ki</Link>
-                                <Link href="/2048">2048</Link>
+                                <span><em>Válassz játékot &rarr;</em></span>
+                                <Link href="/talald-ki" className={location === "/talald-ki" ? 'active' : ''}>Találd ki</Link>
+                                <Link href="/2048" className={location === "/2048" ? 'active' : ''}>2048</Link>
                             </div>
 
                             <Switch>
