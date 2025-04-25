@@ -3,6 +3,10 @@
     height: 100%;
 }
 
+.hidden {
+    display: none;
+}
+
 /* Kártyás játék */
 .draw {
     display: flex;
@@ -38,6 +42,40 @@
 .card.selected.winner {
     box-shadow: 0 0 .4rem forestgreen;
     animation: shakey 0.5s;
+}
+
+ul.messages {
+    padding: 0;
+    margin: 0;
+    list-style-position: inside;
+    list-style: none;
+    line-height: 1.6rem;
+}
+ul.messages li.win {
+    color: green;
+    font-weight: bold;
+}
+ul.messages li.wrong {
+    color: darkred;
+}
+ul.messages li::before {
+    padding-right: 1rem;
+    font-size: 1.5rem;
+}
+ul.messages li.win::before {
+    content: '🤩';
+}
+ul.messages li.wrong:nth-child(4n+1)::before {
+    content: '😖';
+}
+ul.messages li.wrong:nth-child(4n+2)::before {
+    content: '😵';
+}
+ul.messages li.wrong:nth-child(4n+3)::before {
+    content: '🤪';
+}
+ul.messages li.wrong::before {
+    content: '🫣';
 }
 
 @keyframes shakex {

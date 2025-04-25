@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import Debug from './Debug'
 
 function Kartya(props) {
     const [selected, setSelected] = useState(false)
@@ -58,17 +59,19 @@ export default function TalaldKi() {
     }
 
     function handleHuzas(eredmeny) {
-        if (eredmeny) {
-            if (probalkozasok === 0) {
-                setUzenetek(prevState => [...prevState, `Váó, elsőre eltaláltad a kártyát!`])
+        if (!uzenetek.some(uzenet => uzenet.eredmeny)) {
+            if (eredmeny) {
+                if (probalkozasok === 0) {
+                    setUzenetek(prevState => [...prevState, { eredmeny, uzenet: `Váó, elsőre eltaláltad a kártyát!` }])
+                }
+                else {
+                    setUzenetek(prevState => [...prevState, { eredmeny, uzenet: `Gratulálok, ${probalkozasok + 1}. próbálkozásra eltaláltad a kártyát!` }])
+                }
             }
             else {
-                setUzenetek(prevState => [...prevState,`Gratulálok, ${probalkozasok + 1}. próbálkozásra eltaláltad a kártyát!`])
+                setUzenetek(prevState => [...prevState, { eredmeny, uzenet: `Sajnos nem sikerült... ${probalkozasok === 0 ? `De ne csüggedj, segítek: ${kartyak[valasztott].startsWith('♣️') || kartyak[valasztott].startsWith('♠️') ? 'feketét' : 'pirosat'} választottam!` : (probalkozasok === 1 ? `Még egy kis segítség: ${Number.isNaN(parseInt(kartyak[valasztott].charAt(kartyak[valasztott].length - 1))) ? 'betűs' : 'számos'} kártyát választottam.` : `Többet nem segítek, már csak ${kartyakSzama - probalkozasok - 1} kártya van hátra.`)}` }])
+                setProbalkozasok(probalkozasok + 1)
             }
-        }
-        else {
-            setUzenetek(prevState => [...prevState, `Sajnos nem sikerült... ${probalkozasok === 0 ? `De ne csüggedj, segítek: ${kartyak[valasztott].startsWith('♣️') || kartyak[valasztott].startsWith('♠️') ? 'feketét' : 'pirosat'} választottam!` : (probalkozasok === 1 ? `Még egy kis segítség: ${Number.isNaN(parseInt(kartyak[valasztott].charAt(kartyak[valasztott].length - 1))) ? 'betűs' : 'számos'} kártyát választottam.` : `Többet nem segítek, már csak ${kartyakSzama - probalkozasok - 1} kártya van hátra.`)}`])
-            setProbalkozasok(probalkozasok + 1)
         }
     }
 
@@ -90,23 +93,20 @@ export default function TalaldKi() {
                 </div>
                 <ul className="messages">
                     {uzenetek.map((uzenet, i) => {
-                        return (<ul key={i}>{uzenet}</ul>)
+                        return (<li key={i} className={uzenet.eredmeny ? 'win' : 'wrong'}>{uzenet.uzenet}</li>)
                     })}
                 </ul>
                 <p><button onClick={ujJatek}>Új játék!</button></p>
             </div>
 
-            <div className="box">
-                <h2>Debug</h2>
-                <h3>Pakli:</h3>
-                <div className="draw">
-                    {kartyak.map((kartya, i) => {
-                        return (<Kartya key={i} kartya={kartya} felforditva={true} />)
-                    })}
-                </div>
-                <h3>Kiválasztott kártya</h3>
-                <Kartya kartya={kartyak[valasztott]} felforditva={true} />
-            </div>
+            <Debug>
+                <ul>
+                    <li><code>kartyakSzama = {kartyakSzama}</code></li>
+                    <li><code>kartyak = {kartyak.map((kartya, i) => (`${i}: ${kartya}, `))}</code></li>
+                    <li><code>valasztott = {valasztott}: {kartyak[valasztott]}</code></li>
+                    <li><code>probalkozasok = {probalkozasok}</code></li>
+                </ul>
+            </Debug>
         </>
     )
 }
