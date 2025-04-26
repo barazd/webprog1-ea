@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web-programozás-1 Előadás Házi feladat</title>
     <link rel="stylesheet" href="style.css">
+    <script type="module" src="html5.js"></script>
 </head>
 <body>
     <div class="wrapper">
@@ -13,9 +14,9 @@
                 <h1>Web-programozás-1 Előadás Házi feladat</h1>
                 <nav>
                     <ul>
-                        <li><a href="/index.html" class="active">Kezdőlap</a></li>
+                        <li><a href="/index.html">Kezdőlap</a></li>
                         <li><a href="/tablazat.html">Táblázat</a></li>
-                        <li><a href="/html5.html">HTML5</a></li>
+                        <li><a href="/html5.html" class="active">HTML5</a></li>
                         <li><a href="/chartjs.html">ChartJS</a></li>
                         <li><a href="/ajax.html">AJAX</a></li>
                         <li><a href="/oojs.html">OOJS</a></li>
@@ -28,8 +29,34 @@
             <div class="mw-container section">
                 <div class="content">
                     <div class="box">
-                        <h2>Kezdőlap</h2>
-                        <p>Kérem válasszon a menüpontok közül...</p>
+                        <h2>Web Storage</h2>
+                        <p>Lásd <a href="tablazat.html">Táblázat</a> oldal: a táblázat sorai egy <code>localStorage</code>-ban szérializált JSON.ben vannak tárolva.</p>
+                        <p>Jelenleg összesen <span id="storageLength">0</span> sornyi adat van letárolva. <button id="truncateStore">Összes elem törlése</button></p>
+                        <p><button id="deleteStore">localStorage kiürtése</button> &rarr; a <a href="tablazat.html">Táblázat</a> oldal megnyitására újra feltöltésre kerül az alapadatokkal a storage és a táblázat</p>
+                    </div>
+                    <div class="box">
+                        <h2>Web Workers</h2>
+                        <p>...</p>
+                    </div>
+                    <div class="box">
+                        <h2>Server-Sent Events</h2>
+                        <p>...</p>
+                    </div>
+                    <div class="box">
+                        <h2>Geolocation API</h2>
+                        <p>...</p>
+                    </div>
+                    <div class="box">
+                        <h2>Drag and Drop API</h2>
+                        <p>...</p>
+                    </div>
+                    <div class="box">
+                        <h2>Canvas</h2>
+                        <p>...</p>
+                    </div>
+                    <div class="box">
+                        <h2>SVG</h2>
+                        <p>...</p>
                     </div>
                 </div>
                 <aside>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web-programozás-1 Előadás Házi feladat</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="tablazat.js" defer></script>
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+            <div class="mw-container header">
+                <h1>Web-programozás-1 Előadás Házi feladat</h1>
+                <nav>
+                    <ul>
+                        <li><a href="/index.html">Kezdőlap</a></li>
+                        <li><a href="/tablazat.html" class="active">Táblázat</a></li>
+                        <li><a href="/html5.html">HTML5</a></li>
+                        <li><a href="/chartjs.html">ChartJS</a></li>
+                        <li><a href="/ajax.html">AJAX</a></li>
+                        <li><a href="/oojs.html">OOJS</a></li>
+                        <li><a href="/feladat_2/index.html" target="_blank" class="newpage">React</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        <section>
+            <div class="mw-container section">
+                <div class="content">
+                    <div class="box">
+                        <h2>Táblázat</h2>
+                        <p><button id="new-item">Új étterem</button></p>
+                    </div>
+                    <div class="box">
+                        <table id="restaurants">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Étterem neve</th>
+                                    <th>Település</th>
+                                    <th>Típus</th>
+                                    <th>Értékelés</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="6"><em>Nincs megjeleníthető adat!</em></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="filter">
+                            <form id="filter">
+                                <input type="text" placeholder="Gyorskeresés" name="query" /> <select name="cols" id="filter-cols"><option value=""><em>Összes oszlop</em></option></select> <button type="reset">Visszaálltás</button> <span id="filter-stat">? / ? elem</span>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <aside>
+                    <div class="box">
+                        <h2>Információ</h2>
+                        <p>A táblázat mögött egy egyszerű storage controller áll, ami a localStorage-ban tárolja az adatokat szérializált JSON-ben. Ha a storage nem létezik, akkor létrehozza azt egy 5 soros kezdőértékkel (debug lehetőségek a HTML5 oldalon). A táblázat minden eleme esemény alapon működik, ha változik a mögöttes adattartalom, akkor frissül a táblázat stb.
+                        </p>
+                    </div>
+                </aside>
+            </div>  
+        </section>
+        <footer>
+            <div class="mw-container footer">
+                <p><span class="by">Készette</span> Baráz Csongor Dömötör \ <code>BE4RVP</code></p>
+                <p>2025. 04. 21.</p>
+            </div>
+        </footer>
+    </div>
+    
+    
+    <div class="modal-wrapper hidden" id="tablazat-modal">
+        <div class="box">
+            <form action="" id="tablazat-edit">
+                <div class="form-value">
+                    <div class="label"><label for="id">ID</label></div>
+                    <div class="input"><input type="text" name="id" readonly /></div>
+                    <span></span>
+                </div>
+                <div class="form-value">
+                    <div class="label"><label for="name">Étterem neve</label></div>
+                    <div class="input"><input type="text" name="name" required /></div>
+                    <span></span>
+                </div>
+                <div class="form-value">
+                    <div class="label"><label for="city">Település</label></div>
+                    <div class="input"><input type="text" name="city" required /></div>
+                    <span></span>
+                </div>
+                <div class="form-value">
+                    <div class="label"><label for="type">Típus</label></div>
+                    <div class="input">
+                        <select name="type" id="type" required></select>
+                    </div>
+                    <span></span>
+                </div>
+                <div class="form-value">
+                    <div class="label"><label for="rating">Értékelés</label></div>
+                    <div class="input">
+                        <input type="range" name="rating" min="1" max="10" step="1" required /></div>
+                    <span></span>
+                </div>
+                <div class="form-value">
+                    <div class="label"></div>
+                    <div class="input"><a href="#" id="close-modal">Mégsem</a> <button type="submit">Mentés</button></div>
+                </div>
+            </form>
+        </div>
+    </div>  
+</body>
+</html>
