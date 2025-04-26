@@ -30,6 +30,7 @@
                 <div class="content">
                     <div class="box">
                         <h2>Táblázat</h2>
+                        <p><button id="new-item">Új étterem</button></p>
                     </div>
                     <div class="box">
                         <table id="restaurants">
@@ -65,6 +66,47 @@
                 <p>2025. 04. 21.</p>
             </div>
         </footer>
-    </div> 
+    </div>
+    
+    
+    <div class="modal-wrapper hidden" id="tablazat-modal">
+        <div class="box">
+            <h2>Új elem hozzáadása</h2>
+            <form action="" id="tablazat-edit">
+                <div class="form-value">
+                    <div class="label"><label for="id">ID</label></div>
+                    <div class="input"><input type="text" name="id" readonly /></div>
+                    <span></span>
+                </div>
+                <div class="form-value">
+                    <div class="label"><label for="name">Étterem neve</label></div>
+                    <div class="input"><input type="text" name="name" /></div>
+                    <span></span>
+                </div>
+                <div class="form-value">
+                    <div class="label"><label for="city">Település</label></div>
+                    <div class="input"><input type="text" name="city" /></div>
+                    <span></span>
+                </div>
+                <div class="form-value">
+                    <div class="label"><label for="type">Típus</label></div>
+                    <div class="input">
+                        <select name="type" id="type"></select>
+                    </div>
+                    <span></span>
+                </div>
+                <div class="form-value">
+                    <div class="label"><label for="rating">Értékelés</label></div>
+                    <div class="input">
+                        <input type="range" name="rating" min="1" max="10" step="1" /></div>
+                    <span></span>
+                </div>
+                <div class="form-value">
+                    <div class="label"></div>
+                    <div class="input"><a href="#" id="close-modal">Mégsem</a> <button type="submit">Mentés</button></div>
+                </div>
+            </form>
+        </div>
+    </div>  
 </body>
 </html>

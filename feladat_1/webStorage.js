@@ -67,19 +67,25 @@ export default class webStorage extends EventTarget {
 
     createItem(data) {
         // Ha nincs id, csinálunk
-        if (data.id === undefined) {
+        if (data.id === undefined || !data.id) {
             data.id = crypto.randomUUID();
         }
-        let items = getItems();
+        let items = this.getItems();
         items.push(data);
-        saveItems(items);
+        this.saveItems(items);
     }
 
-    updateItem(id, data) {
-
+    updateItem(data) {
+        let items = this.getItems();
+        items = items.map(item => item.id === data.id ?
+            data :
+            item);
+        this.saveItems(items);
     }
 
     deleteItem(id) {
-
+        let items = this.getItems();
+        items = items.filter((item) => item.id !== id);
+        this.saveItems(items);
     }
 }
