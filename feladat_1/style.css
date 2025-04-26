@@ -190,7 +190,46 @@ footer .by {
     width: inherit;
 }
 .modal-wrapper .box {
-    min-width: 400px;
-    max-width: 600px;
+    min-width: 500px;
+    max-width: 800px;
     z-index: 12;
+}
+.form-value {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 1rem 2rem;
+}
+.form-value .label  {
+    grid-column: span 2 / span 2;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-weight: bold;
+}
+.form-value .input {
+    grid-column: span 3 / span 3;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+.form-value .input input, .form-value .input select {
+    display: block;
+    border: 1px solid dimgray;
+    border-radius: .3rem;
+    padding: .3rem .6rem;
+    width: 100%;
+}
+.form-value .input button {
+    display: block;
+    border: 1px solid black;
+    background: darkslategray;
+    color: white;
+    border-radius: .3rem;
+    padding: .3rem .6rem;
+    align-self: flex-end;
+}
+.form-value .input input:read-only {
+    background: lightgray;
+    color: dimgray;
+    border-color: darkgray;
 }

@@ -63,7 +63,7 @@ function renderTable(data, structure) {
     table.querySelector('tbody').innerHTML = data.reduce((html, item) => html + '<tr>' + 
         structure.reduce((row, kind) => row + 
             `<td>${kind.format ? kind.format(item[kind.key]) : item[kind.key]}</td>`, '') + 
-            `<td class="buttons"><button class="item-delete" title="Törlés" data-id="${item['id']}">T</button> <button class="item-edit" title="Szerkesztés" data-id="${item['id']}">Sz</button></td>` +
+            `<td class="buttons"><button class="item-delete" title="Törlés" data-id="${item['id']}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M9.808 17h1V8h-1zm3.384 0h1V8h-1zM6 20V6H5V5h4v-.77h6V5h4v1h-1v14z"/></svg></button> <button class="item-edit" title="Szerkesztés" data-id="${item['id']}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M4 13.885V8.769h7.5v5.116zm0-6.116V4h16v3.77zM4 20v-5.115h7.5V20zm8.5-6.116V8.77h7.304v1.039l-4.102 4.077zM13.23 21v-2.21l5.96-5.934l2.19 2.204L15.44 21zm5.96-4.985l.925-.956l-.924-.943l-.95.95z"/></svg></button></td>` +
         '</tr>', '');
 
     // Mindeféle eseményfigyelők létrehozása - minden renderelésnél váltiozik a DOM, keretrendszer nélkül így a megúszós
@@ -135,6 +135,7 @@ function closeModal() {
 
 // Bezárás figyelése
 document.getElementById('tablazat-modal').addEventListener('click', () => closeModal());
+document.querySelector('#tablazat-modal .box').addEventListener('click', (e) => e.stopPropagation()); // Hogy ne záródjon be ha kattingatunk a felugró ablakban
 document.getElementById('close-modal').addEventListener('click', () => closeModal());
 
 // Új elem gomb figyelése
