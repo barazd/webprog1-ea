@@ -55,19 +55,20 @@ function Mezo(props) {
 }
 
 export default function Aknakereso() {
-    const meret = 16
+    const [meret, setMeret] = useState(24)
+    const [nehezseg, setNehezseg] = useState(3)
     const [palya, setPalya] = useState([[]])
     const [palyaUUID, setPalyaUUID] = useState('')
+    const [aknak, setAknak] = useState(0)
 
     function ujJatek() {
         let epuloPalya = new Array(meret).fill().map(() => new Array(meret).fill({ ertek: null, felfedve: false}))
-
-        setPalyaUUID(crypto.randomUUID())
+        //setPalya(epuloPalya)
         // Aknásítás
-        const mines = Math.floor(Math.random() * ((meret * meret / 6) - (meret * meret / 10)) + (meret * meret / 10))
-        console.log(`${mines} db akna generálása`)
+        setAknak(Math.floor(Math.random() * ((meret * meret / (nehezseg * 2)) - (meret * meret / (nehezseg * 5))) + (meret * meret / (nehezseg * 5))))
+        console.log(`${aknak} db akna generálása a ${meret} méretű pályára`)
 
-        for (let i = 0; i < mines; i++) {
+        for (let i = 0; i < aknak; i++) {
             epuloPalya[Math.floor(Math.random() * meret)][Math.floor(Math.random() * meret)] = { ertek: 'x', felfedve: false }
         }
 
@@ -88,6 +89,17 @@ export default function Aknakereso() {
         }))
 
         setPalya(epuloPalya)
+        setPalyaUUID(crypto.randomUUID())
+    }
+
+    function handleUjJatek(esemeny) {
+        // Új játék gomb esetén méretet állít
+        esemeny.preventDefault()
+        const form = new FormData(esemeny.target)
+        setMeret(parseInt(form.get('selectedMeret')))
+        setNehezseg(parseInt(form.get('selectedNehezseg')))
+        //setPalya([])
+        ujJatek()
     }
 
     function felfed(x, y) {
@@ -135,7 +147,7 @@ export default function Aknakereso() {
         <>
             <div className="box">
                 <h2>Aknekereső</h2>
-                <p>Keresd meg a "szokásos" módon ebben a {meret} x {meret} méretű pályán az összes aknát. Jobb klikkel helyezhetők le a zászlók.</p>
+                <p>Keresd meg a "szokásos" módon ebben a {meret} x {meret} = {meret * meret} méretű pályán mind a(z) {aknak} db aknát. Jobb klikkel helyezhetők le a zászlók.</p>
                 <div className="minefield">
                     {palya.map((sor, x) => {
                         return (<div key={x} className="row">
@@ -145,7 +157,25 @@ export default function Aknakereso() {
                         </div>)
                     })}
                 </div>
-                <p><button onClick={ujJatek}>Új játék</button></p>
+                <form onSubmit={handleUjJatek}>
+                    Méret: 
+                    <select name="selectedMeret" defaultValue={meret}>
+                        <option value="8">XS teszteléshez</option>
+                        <option value="16">kicsi</option>
+                        <option value="24">közepes</option>
+                        <option value="32">nagy</option>
+                        <option value="48">XXL</option>
+                    </select>
+
+                    Nehézség:
+                    <select name="selectedNehezseg" defaultValue={nehezseg}>
+                        <option value="5">könnyű</option>
+                        <option value="3">közepes</option>
+                        <option value="1">nehéz</option>
+                    </select>
+                     
+                    <button type='submit'>Új játék</button>
+                </form>
             </div>
 
             <Debug>

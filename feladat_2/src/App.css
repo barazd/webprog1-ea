@@ -149,6 +149,33 @@ ul.messages li.wrong::before {
 .minefield .row .field.hide span {
     display: none;
 }
+.minefield .row .field span {
+    font-weight: bold;
+}
+.minefield .row .field.value-1 span {
+    color: navy;
+}
+.minefield .row .field.value-2 span {
+    color: green;
+}
+.minefield .row .field.value-3 span {
+    color: red;
+}
+.minefield .row .field.value-4 span {
+    color: purple;
+}
+.minefield .row .field.value-5 span {
+    color: maroon;
+}
+.minefield .row .field.value-6 span {
+    color: teal;
+}
+.minefield .row .field.value-7 span {
+    color: black;
+}
+.minefield .row .field.value-8 span {
+    color: gray;
+}
 .minefield .row .field.show {
     background: white;
 }
