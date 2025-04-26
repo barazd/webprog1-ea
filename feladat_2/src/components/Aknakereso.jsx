@@ -55,30 +55,35 @@ function Mezo(props) {
 }
 
 export default function Aknakereso() {
-    const [meret, setMeret] = useState(24)
-    const [nehezseg, setNehezseg] = useState(3)
+    let meret = 24
+    let nehezseg = 3
+    let aknak = 0
     const [palya, setPalya] = useState([[]])
     const [palyaUUID, setPalyaUUID] = useState('')
-    const [aknak, setAknak] = useState(0)
+    const [palyaStatisztika, setPalyaStatisztika] = useState({ meret, aknak })
+
+    function updatePalya(x, y, ertekek) {
+        setPalya(palya.map((sor, sx) => sor.map((mezo, sy) => (sx === x && sy === y) ? Object.assign(mezo, ertekek) : mezo)))
+    }
 
     function ujJatek() {
-        let epuloPalya = new Array(meret).fill().map(() => new Array(meret).fill({ ertek: null, felfedve: false}))
+        let ujPalya = (Array(meret).fill().map(() => new Array(meret).fill({ ertek: null, felfedve: false})))
         //setPalya(epuloPalya)
         // Aknásítás
-        setAknak(Math.floor(Math.random() * ((meret * meret / (nehezseg * 2)) - (meret * meret / (nehezseg * 5))) + (meret * meret / (nehezseg * 5))))
-        console.log(`${aknak} db akna generálása a ${meret} méretű pályára`)
+        aknak = Math.floor(Math.random() * ((meret * meret / (nehezseg * 2)) - (meret * meret / (nehezseg * 5))) + (meret * meret / (nehezseg * 5)))
+        console.log(`${aknak} db akna generálása a ${meret * meret} méretű pályára, a(z) ${(meret * meret / (nehezseg * 5))} - ${(meret * meret / (nehezseg * 2))} nehézség alapján`)
 
         for (let i = 0; i < aknak; i++) {
-            epuloPalya[Math.floor(Math.random() * meret)][Math.floor(Math.random() * meret)] = { ertek: 'x', felfedve: false }
+            ujPalya[Math.floor(Math.random() * meret)][Math.floor(Math.random() * meret)] = { ertek: 'x', felfedve: false }
         }
 
         // Szomszédos aknák összeszámolása
-        epuloPalya = epuloPalya.map((sor, x) => sor.map((mezo, y) => {
+        ujPalya = ujPalya.map((sor, x) => sor.map((mezo, y) => {
             if (mezo.ertek !== 'x') {
                 let szomszedosAknak = 0
                 for (let i = -1; i <= 1; i++) {
                     for (let j = -1; j <= 1; j++) {
-                        if ((x + i < meret && y + j < meret && x + i >= 0 && y + j >= 0) && epuloPalya[x + i][y + j].ertek === 'x') {
+                        if ((x + i < meret && y + j < meret && x + i >= 0 && y + j >= 0) && ujPalya[x + i][y + j].ertek === 'x') {
                             szomszedosAknak++
                         }
                     }
@@ -88,17 +93,17 @@ export default function Aknakereso() {
             return mezo
         }))
 
-        setPalya(epuloPalya)
+        setPalya(ujPalya)
         setPalyaUUID(crypto.randomUUID())
+        setPalyaStatisztika({meret, aknak})
     }
 
     function handleUjJatek(esemeny) {
         // Új játék gomb esetén méretet állít
         esemeny.preventDefault()
         const form = new FormData(esemeny.target)
-        setMeret(parseInt(form.get('selectedMeret')))
-        setNehezseg(parseInt(form.get('selectedNehezseg')))
-        //setPalya([])
+        meret = parseInt(form.get('selectedMeret'))
+        nehezseg = parseInt(form.get('selectedNehezseg'))
         ujJatek()
     }
 
@@ -106,6 +111,7 @@ export default function Aknakereso() {
         /*if (palya[x][y].ertek !== 'x') {
             setPalya(palya.map((sor, sx) => sor.map((mezo, sy) => (sx === x && sy === y) ? Object.assign(mezo, { felfedve: true }) : mezo)))
         }*/
+        const meret = palyaStatisztika.meret // ezen a ponton döntöttem el, hogy továbbra is jó lesz nekem a vue
         for (let i = -1; i <= 1; i++) {
             for (let j = -1; j <= 1; j++) {
                 if ((x + i < meret && y + j < meret && x + i >= 0 && y + j >= 0) && palya[x + i][y + j].ertek !== 'x' && !palya[x + i][y + j].felfedve) {
@@ -134,7 +140,6 @@ export default function Aknakereso() {
         }
         else if (elem.ertek === null) {
             // El kell kezdeni felfedni az összes szomszédot
-            console.log('felfedés')
             felfed(elem.x, elem.y)
         }
     }
@@ -147,7 +152,7 @@ export default function Aknakereso() {
         <>
             <div className="box">
                 <h2>Aknekereső</h2>
-                <p>Keresd meg a "szokásos" módon ebben a {meret} x {meret} = {meret * meret} méretű pályán mind a(z) {aknak} db aknát. Jobb klikkel helyezhetők le a zászlók.</p>
+                <p>Keresd meg a "szokásos" módon ebben a {palyaStatisztika.meret} x {palyaStatisztika.meret} = {palyaStatisztika.meret * palyaStatisztika.meret} méretű pályán mind a(z) {palyaStatisztika.aknak} db aknát. Jobb klikkel helyezhetők le a zászlók.</p>
                 <div className="minefield">
                     {palya.map((sor, x) => {
                         return (<div key={x} className="row">
@@ -160,21 +165,21 @@ export default function Aknakereso() {
                 <form onSubmit={handleUjJatek}>
                     Méret: 
                     <select name="selectedMeret" defaultValue={meret}>
-                        <option value="8">XS teszteléshez</option>
-                        <option value="16">kicsi</option>
-                        <option value="24">közepes</option>
-                        <option value="32">nagy</option>
-                        <option value="48">XXL</option>
+                        <option value="8">XS (8x8)</option>
+                        <option value="16">kicsi (16x16)</option>
+                        <option value="24">közepes (24x24)</option>
+                        <option value="32">nagy (32x32)</option>
+                        <option value="48">XXL (48x48)</option>
                     </select>
 
-                    Nehézség:
+                     Nehézség:
                     <select name="selectedNehezseg" defaultValue={nehezseg}>
                         <option value="5">könnyű</option>
                         <option value="3">közepes</option>
                         <option value="1">nehéz</option>
                     </select>
                      
-                    <button type='submit'>Új játék</button>
+                     <button type='submit'>Új játék</button>
                 </form>
             </div>
 
