@@ -65,11 +65,11 @@
 
 .card.selected.wrong {
     box-shadow: 0 0 .4rem red;
-    animation: shakex 0.5s;
+    animation: shakex .5s ease;
 }
 .card.selected.winner {
     box-shadow: 0 0 .4rem forestgreen;
-    animation: shakey 0.5s;
+    animation: shakey .5s ease;
 }
 
 ul.messages {
@@ -134,6 +134,8 @@ ul.messages li.wrong::before {
 }
 .minefield .row .field {
     display: flex;
+    align-content: center;
+    justify-content: center;
     width: 1.4rem;
     height: 1.4rem;
     border: .5px solid gray;
@@ -149,4 +151,16 @@ ul.messages li.wrong::before {
 }
 .minefield .row .field.show {
     background: white;
+}
+.minefield .row .field.value-x {
+    animation: pulse 2s infinite ease;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    background-color: white;
+  }
+  50% {
+    background-color: red;
+  }
 }

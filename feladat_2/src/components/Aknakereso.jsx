@@ -11,6 +11,10 @@ function Mezo(props) {
             setLathato(true)
             setMegjelelolt(false)
         }
+        else {
+            setLathato(false)
+            setMegjelelolt(false)
+        }
     }, [props.felfedve])
 
     function handleClick(esemeny) {
@@ -43,7 +47,7 @@ function Mezo(props) {
 
     return (
         <>
-            <div className={'field' + (lathato || megjelelolt ? ' show' : ' hide')} onContextMenu={handleClick} onClick={handleClick}>
+            <div className={'field' + (lathato || megjelelolt ? ' show' + (props.ertek && !megjelelolt ? ' value-' + props.ertek : '') : ' hide')} onContextMenu={handleClick} onClick={handleClick}>
                 <span>{getJelolo()}</span>
             </div>
         </>
@@ -53,10 +57,12 @@ function Mezo(props) {
 export default function Aknakereso() {
     const meret = 16
     const [palya, setPalya] = useState([[]])
+    const [palyaUUID, setPalyaUUID] = useState('')
 
     function ujJatek() {
         let epuloPalya = new Array(meret).fill().map(() => new Array(meret).fill({ ertek: null, felfedve: false}))
 
+        setPalyaUUID(crypto.randomUUID())
         // Aknásítás
         const mines = Math.floor(Math.random() * ((meret * meret / 6) - (meret * meret / 10)) + (meret * meret / 10))
         console.log(`${mines} db akna generálása`)
@@ -129,12 +135,12 @@ export default function Aknakereso() {
         <>
             <div className="box">
                 <h2>Aknekereső</h2>
-                <p>A szokásos módon ebben a {meret} x {meret} méretű pályán kell megkeresni az összes aknát.</p>
+                <p>Keresd meg a "szokásos" módon ebben a {meret} x {meret} méretű pályán az összes aknát. Jobb klikkel helyezhetők le a zászlók.</p>
                 <div className="minefield">
                     {palya.map((sor, x) => {
                         return (<div key={x} className="row">
                             {sor.map((mezo, y) => {
-                                return ( <Mezo key={`${x},${y}`} ertek={mezo.ertek} felfedes={handleFelfedes} x={x} y={y} felfedve={mezo.felfedve} /> )
+                                return (<Mezo key={`${palyaUUID}-${x}-${y}`} ertek={mezo.ertek} felfedes={handleFelfedes} x={x} y={y} felfedve={mezo.felfedve} /> )
                             })}
                         </div>)
                     })}
