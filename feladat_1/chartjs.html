@@ -6,32 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web-programozás-1 Előadás Házi feladat</title>
     <link rel="stylesheet" href="style.css">
-    <script type="module" defer>
-        import { Chart, registerables } from 'https://cdn.jsdelivr.net/npm/chart.js@4.4.9/+esm';
-
-        Chart.register(...registerables);
-
-        const ctx = document.getElementById('chart');
-
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-                datasets: [{
-                    label: '# of Votes',
-                    data: [12, 19, 3, 5, 2, 3],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    </script>
+    <script type="module" defer src="chartjs.js"></script>
 </head>
 
 <body>
@@ -80,12 +55,6 @@
             </div>
         </footer>
     </div>
-    <script>
-        //import Chart from 'chart';
-
-        
-
-    </script>
 </body>
 
 </html>
