@@ -4,20 +4,39 @@ Chart.register(...registerables);
 
 const ctx = document.getElementById('chart');
 
+// Random adatsor generálók
+function getRandomDataset(length = 5, min = 5, max = 50) {
+    return Array.from({ length }, () => Math.floor(Math.random() * (max - min) + min));
+}
+function getRandomColor() {
+    return '#' + (Math.random() * 0xFFFFFF << 0).toString(16);
+}
+function getRandomLabel() {
+    return '#' + (Math.random() * 0xFFFFFF << 0).toString(16);
+}
+
+// Adatok mennyisége
+const length = 5;
+
 new Chart(ctx, {
-    type: 'bar',
+    type: 'line',
     data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        datasets: [{
-            label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3],
-            borderWidth: 1
-        }]
+        labels: getRandomDataset(length).sort((a, b) => a - b),
+        datasets: new Array(length).fill().map(() => new Object({
+            data: getRandomDataset(),
+            label: 'L' + getRandomColor().slice(-2).toUpperCase(),
+            borderColor: getRandomColor(),
+            fill: false
+        }))
     },
     options: {
+        title: {
+            display: true,
+            text: "Véletlenszerű adatok",
+        },
         scales: {
             y: {
-                beginAtZero: true
+                beginAtZero: true,
             }
         }
     }
