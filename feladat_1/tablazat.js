@@ -43,6 +43,28 @@ function renderTable(data, structure) {
             '<th></th>' + 
         '</tr>';
 
+    const originalLength = data.length;
+
+    // Tartalom szűrése
+    const filterForm = document.getElementById('filter').elements;
+
+    if (filterForm.namedItem('query').value) { // Ha van keresési kifejezés
+        const regex = new RegExp(filterForm.namedItem('query').value, 'i');
+        data = data.filter((item) => {
+            if (filterForm.namedItem('cols').value) { // Ha van oszlopra szűrés
+                return regex.test(item[filterForm.namedItem('cols').value]);
+            }
+            else {
+                return Object.entries(item).some(([key, value]) => {
+                    return regex.test(value);
+                });
+            }
+        });
+    }
+
+    // Statisztika
+    document.getElementById('filter-stat').innerHTML = `${data.length} / ${originalLength} elem`;
+
     // Tartalom sorbarendezése
     const orderBy = structure.find((item) => item.order);
     data = data.sort((a, b) => { 
@@ -172,3 +194,20 @@ restaurantTypes.forEach(data => {
     newOption.text = data.title;
     form.namedItem('type').add(newOption, null);
 });
+
+// Táblázat szűrési/keresési logika
+
+// Selectek feltöltése adatokkal
+const filterForm = document.getElementById('filter').elements;
+
+tableStructure.forEach(data => {
+    if (data.sortable) {
+        const newOption = document.createElement("option");
+        newOption.value = data.key;
+        newOption.text = data.title;
+        filterForm.namedItem('cols').add(newOption, null);
+    }
+});
+
+// Szűrés figyelés
+['input', 'reset'].forEach((event) => document.getElementById('filter').addEventListener(event, () => renderTable(store.getItems(), tableStructure)));
