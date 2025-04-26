@@ -166,6 +166,37 @@ footer .by {
     padding: .1rem .4rem;
     border-radius: 50vh;
 }
+#restaurants td.buttons {
+    display: flex;
+    gap: .3rem;
+    justify-content: end;
+    
+}
+#restaurants td.buttons button {
+    display: block;
+    border: 1px solid dimgray;
+    border-radius: .3rem;
+    padding: .2rem .3rem;
+}
+#restaurants td.buttons button.item-delete {
+    color: red;
+}
+
+.filter {
+    border-top: 1px solid gray;
+    padding-top: 1rem;
+}
+.filter form {
+    display: flex;
+    gap: .3rem;
+    align-items: center;
+}
+.filter input, .filter select, .filter button {
+    display: block;
+    border: 1px solid dimgray;
+    border-radius: .3rem;
+    padding: .3rem .6rem;
+}
 
 .modal-wrapper {
     position: fixed;
