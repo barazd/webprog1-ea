@@ -148,6 +148,8 @@ function onSubmit(event) {
     const form = document.getElementById('tablazat-edit');
     const formData = new FormData(form);
 
+    // Validáció
+
     // Ha van ID frisstünk, ha nincs újat hozunk létre
     if(formData.get('id')) {
         store.updateItem(Array.from(formData.entries()).reduce((prev, [key, value]) => ({...prev, [key]: value}), {})); // A JS csodái...
