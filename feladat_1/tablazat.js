@@ -28,23 +28,55 @@ const initialData = [
 const tableStructure = [
     { title: 'ID', key: 'id', sortable: true, format: (data) => `<code>${data.split('-')[0]}</code>` },
     { title: 'Étterem neve', key: 'name', sortable: true, format: (data) => `<strong>${data}</strong>` },
-    { title: 'Település', order: 'desc', key: 'city',  sortable: true },
+    { title: 'Település', order: 'desc', key: 'city', sortable: true },
     { title: 'Típus', key: 'type', format: (data) => restaurantTypes.find((item) => item.id === data).title },
-    { title: 'Értékelés', key: 'rating',  sortable: true, format: (data) => `${data}/10` },
+    { title: 'Értékelés', key: 'rating', sortable: true, format: (data) => `${data}/10` },
 ];
 
 // Táblázat kirajzolása
 function renderTable(data, structure) {
     const table = document.querySelector('#restaurants');
     // Fejléc renderelése
-    table.querySelector('thead').innerHTML = '<tr>' + structure.reduce((row, kind) => row + `<th class="${kind.sortable ? 'sortable' : ''} ${kind.order || ''}" data-key="${kind.key}" onclick="sortTable(this)">${kind.title}</th>`, '') + '</tr>';
+    table.querySelector('thead').innerHTML = '<tr>' + structure.reduce((row, kind) => row + `<th class="${kind.sortable ? 'sortable' : ''} ${kind.order || ''}" data-key="${kind.key}">${kind.title}</th>`, '') + '</tr>';
 
     // Tartalom sorbarendezése
     const orderBy = structure.find((item) => item.order);
-    data = data.sort((a, b) => orderBy.order === 'asc' ? a[orderBy.key].localeCompare(b[orderBy.key]) : b[orderBy.key].localeCompare(a[orderBy.key]));
+    data = data.sort((a, b) => { 
+        // Ha számok
+        if (!isNaN(a[orderBy.key]) && !isNaN(b[orderBy.key])) {
+            return (orderBy.order === 'asc') ?
+                a[orderBy.key] - b[orderBy.key] : 
+                b[orderBy.key] - a[orderBy.key];
+        }  else {
+            // Ha más, akkor szövegként kezeljük
+            return (orderBy.order === 'asc') ?
+                a[orderBy.key].toString().localeCompare(b[orderBy.key]) : 
+                b[orderBy.key].toString().localeCompare(a[orderBy.key]);
+        }   
+    });
 
     // Tartalom renderelése
-    table.querySelector('tbody').innerHTML = data.reduce((html, item) => html + '<tr>' + structure.reduce((row, kind) => row + `<td>${kind.format ? kind.format(item[kind.key]): item[kind.key]}</td>`, '') + '</tr>', '');
+    table.querySelector('tbody').innerHTML = data.reduce((html, item) => html + '<tr>' + structure.reduce((row, kind) => row + `<td>${kind.format ? kind.format(item[kind.key]) : item[kind.key]}</td>`, '') + '</tr>', '');
+
+    // Sorbarendezés eseményfigyelők létrehozása - minden renderelésnél váltiozik a DOM, keretrendszer nélkül így a megúszós
+    Array.from(table.querySelectorAll('.sortable')).forEach((el) => {
+        el.addEventListener('click', () => {
+            // Melyik oszlop?
+            const col = tableStructure.find((item) => item.key === el.dataset.key);
+            // Itt csak az adatszerkezezetben módosjtjuk a sorbarendezést
+            if (!col.order) { // Ha nem ez volt eddig sorbarendezve
+                delete tableStructure.find((item) => item.order).order;
+                col.order = 'asc';
+            } else if (col.order === 'asc') { // Ha ez volt növekvőben
+                col.order = 'desc';
+            }
+            else { // Ha ez volt csökkenőben
+                col.order = 'asc';
+            }
+            // Majd újrarendereljük a táblát
+            renderTable(store.getItems(), tableStructure);
+        });
+    });
 }
 
 // Storage megoldás
@@ -52,11 +84,11 @@ const store = new webStorage('webprog1-ea', initialData);
 
 // Ha betöltődött az oldal
 //document.addEventListener('DOMContentLoaded', () => {
-    renderTable(store.getItems(), tableStructure);
+renderTable(store.getItems(), tableStructure);
 
-    store.on("updated", () => {
-        renderTable(store.getItems(), tableStructure);
-    });
+store.on("updated", () => {
+    renderTable(store.getItems(), tableStructure);
+});
 
 // Sorbarendezés
 export const sortTable = (el) => {
@@ -74,26 +106,3 @@ export const sortTable = (el) => {
     }
     renderTable(store.getItems(), tableStructure);
 }
-
-    // Sorbarendezés
-    const table = document.querySelector('#restaurants thead');
-    Array.from(document.getElementsByClassName('.sortable')).forEach((el) => {
-    //document.querySelectorAll('#restaurants th.sortable').forEach((el) => {
-        
-        console.log(el);
-        el.addEventListener('click', () => {
-            console.log('hopp');
-            const col = tableStructure.find((item) => item.key === el.dataset.key);
-            if (!col.order) { // Ha nem ez volt eddig sorbarendezve
-                delete tableStructure.find((item) => item.order).order;
-                col.order = 'asc';
-            } else if (col.order === 'asc') { // Ha ez volt növekvőben
-                col.order = 'desc';
-            }
-            else { // Ha ez volt csökkenőben
-                col.order = 'asc';
-            }
-            renderTable(store.getItems(), tableStructure);
-        });
-    });
-//});//
