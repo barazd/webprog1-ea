@@ -122,10 +122,19 @@ ul.messages li.wrong::before {
 }
 
 /* Aknakereső */
+.minewrap {
+    max-width: 100%;
+    overflow-y: hidden;
+    overflow-x: visible;
+    scrollbar-width: thin; 
+}
 .minefield {
     display: flex;
     flex-direction: column;
-    border-collapse: collapse;
+    width: fit-content;
+    border: .5px solid gray;
+    border-radius: .5rem;
+    overflow: hidden;
 }
 .minefield .row {
     display: flex;
@@ -181,6 +190,15 @@ ul.messages li.wrong::before {
 }
 .minefield .row .field.value-x {
     animation: pulse 2s infinite ease;
+}
+
+.mine-msg.won {
+    color: forestgreen;
+    font-size: 1.5rem;
+}
+.mine-msg.wasted {
+    color: red;
+    font-size: 1.5rem;
 }
 
 @keyframes pulse {

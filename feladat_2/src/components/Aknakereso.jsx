@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import Debug from './Debug'
 
 function Mezo(props) {
@@ -60,7 +60,7 @@ export default function Aknakereso() {
     let aknak = 0
     const [palya, setPalya] = useState([[]])
     const [palyaUUID, setPalyaUUID] = useState('')
-    const [palyaStatisztika, setPalyaStatisztika] = useState({ meret, aknak })
+    const [palyaStatisztika, setPalyaStatisztika] = useState({ meret, aknak, felfedve: 0, elveszitett: false })
 
     function updatePalya(x, y, ertekek) {
         setPalya(palya.map((sor, sx) => sor.map((mezo, sy) => (sx === x && sy === y) ? Object.assign(mezo, ertekek) : mezo)))
@@ -95,7 +95,7 @@ export default function Aknakereso() {
 
         setPalya(ujPalya)
         setPalyaUUID(crypto.randomUUID())
-        setPalyaStatisztika({meret, aknak})
+        setPalyaStatisztika({ meret, aknak, felfedve: 0, elveszitett: false })
     }
 
     function handleUjJatek(esemeny) {
@@ -107,6 +107,13 @@ export default function Aknakereso() {
         ujJatek()
     }
 
+    function mezoFelfedese(x, y) {
+        if (!palya[x][y].felfedve) {
+            updatePalya(x, y, { felfedve: true })
+            setPalyaStatisztika(Object.assign(palyaStatisztika, { felfedve: palyaStatisztika.felfedve + 1 }))
+        }
+    }
+
     function felfed(x, y) {
         /*if (palya[x][y].ertek !== 'x') {
             setPalya(palya.map((sor, sx) => sor.map((mezo, sy) => (sx === x && sy === y) ? Object.assign(mezo, { felfedve: true }) : mezo)))
@@ -116,7 +123,7 @@ export default function Aknakereso() {
             for (let j = -1; j <= 1; j++) {
                 if ((x + i < meret && y + j < meret && x + i >= 0 && y + j >= 0) && palya[x + i][y + j].ertek !== 'x' && !palya[x + i][y + j].felfedve) {
                     // szomszéd felfedése
-                    setPalya(palya.map((sor, sx) => sor.map((mezo, sy) => (sx === x + i && sy === y + j) ? Object.assign(mezo, { felfedve: true }) : mezo)))
+                    mezoFelfedese(x + i, y + j)
                     // tovább megyünk, ha a szomszéd üres, egyébként elértük a határt
                     if (palya[x + i][y + j].ertek === null) {
                         felfed(x + i, y + j)
@@ -127,16 +134,16 @@ export default function Aknakereso() {
     }
 
     function handleFelfedes(elem) {
-        // felfedés követése
-        setPalya(palya.map((sor, x) => sor.map((mezo, y) => (elem.x === x && elem.y === y) ? Object.assign(mezo, {felfedve: true}) : mezo)))
+        // Felfedés
+        mezoFelfedese(elem.x, elem.y)
 
         // el kell dönteni mi történik
-        console.log(elem)
         if (elem.ertek === 'x') {
             // Akna!
-            console.log('Veszítettél')
-            // Minden felfedése
+            console.log('Veszítettél!')
+            // Minden mező felfedése
             setPalya(palya.map((sor, x) => sor.map((mezo, y) => Object.assign(mezo, { felfedve: true }))))
+            setPalyaStatisztika(Object.assign(palyaStatisztika, { elveszitett: true }))
         }
         else if (elem.ertek === null) {
             // El kell kezdeni felfedni az összes szomszédot
@@ -148,20 +155,34 @@ export default function Aknakereso() {
         ujJatek()
     }, [])
 
+    const uzenet = useMemo(() => { // ez elvileg olyan, mint a computed
+        if (((palyaStatisztika.meret * palyaStatisztika.meret) - palyaStatisztika.aknak - palyaStatisztika.felfedve) == 0) {
+            console.log('Nyertél!')
+            return { osztaly: 'mine-msg won', uzenet: '😊 Gratulálok, nyertél!' }
+        }
+        if (palyaStatisztika.elveszitett) {
+            return { osztaly: 'mine-msg wasted', uzenet: '💥 Bumm! Veszítettél.' }
+        }
+    }, [palyaStatisztika.meret, palyaStatisztika.felfedve, palyaStatisztika.aknak, palyaStatisztika.elveszitett])
+
     return (
         <>
             <div className="box">
                 <h2>Aknekereső</h2>
-                <p>Keresd meg a "szokásos" módon ebben a {palyaStatisztika.meret} x {palyaStatisztika.meret} = {palyaStatisztika.meret * palyaStatisztika.meret} méretű pályán mind a(z) {palyaStatisztika.aknak} db aknát. Jobb klikkel helyezhetők le a zászlók.</p>
-                <div className="minefield">
-                    {palya.map((sor, x) => {
-                        return (<div key={x} className="row">
-                            {sor.map((mezo, y) => {
-                                return (<Mezo key={`${palyaUUID}-${x}-${y}`} ertek={mezo.ertek} felfedes={handleFelfedes} x={x} y={y} felfedve={mezo.felfedve} /> )
-                            })}
-                        </div>)
-                    })}
+                <p>Keresd meg mind a(z) {palyaStatisztika.aknak} db aknát a "szokásos" módon ezen a {palyaStatisztika.meret} x {palyaStatisztika.meret} = {palyaStatisztika.meret * palyaStatisztika.meret} méretű pályán. Jobb klikkel helyezhetők le a zászlók. Eddig {palyaStatisztika.felfedve} db mezőt éltél túl, és még {(palyaStatisztika.meret * palyaStatisztika.meret) - palyaStatisztika.aknak  - palyaStatisztika.felfedve} db van hátra!</p>
+                <div className="minewrap">
+                    <div className="minefield">
+                        {palya.map((sor, x) => {
+                            return (<div key={x} className="row">
+                                {sor.map((mezo, y) => {
+                                    return (<Mezo key={`${palyaUUID}-${x}-${y}`} ertek={mezo.ertek} felfedes={handleFelfedes} x={x} y={y} felfedve={mezo.felfedve} />)
+                                })}
+                            </div>)
+                        })}
+                    </div>
                 </div>
+                
+                { uzenet && <p className={uzenet.osztaly}>{uzenet.uzenet}</p>}
                 <form onSubmit={handleUjJatek}>
                     Méret: 
                     <select name="selectedMeret" defaultValue={meret}>
