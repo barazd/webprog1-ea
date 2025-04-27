@@ -28,7 +28,6 @@ if (window.Worker) {
     // Üzenet küldése
     workerForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        console.log([e, e.target.elements.namedItem('n1').value, e.target.elements.namedItem('n2').value, e.target.elements.namedItem('op').value])
         worker.postMessage([e.target.elements.namedItem('n1').value, e.target.elements.namedItem('n2').value, e.target.elements.namedItem('op').value]);
     });
 
