@@ -264,3 +264,17 @@ footer .by {
     color: dimgray;
     border-color: darkgray;
 }
+
+/* ChartJs feladat */
+
+#table th, #table td {
+    padding: .3em .5em;
+    border-bottom: 1px solid lightgray;
+}
+#table tr:last-child td {
+    border-bottom: none;
+}
+#table thead th {
+    text-align: left;
+    vertical-align: middle;
+}
