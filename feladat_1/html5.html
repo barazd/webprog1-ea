@@ -36,7 +36,20 @@
                     </div>
                     <div class="box">
                         <h2>Web Workers</h2>
-                        <p>...</p>
+                        <p>Ez egy egyszerű számológép, ami ki lett szervezve... és nagyon lassan számol.</p>
+                        <form id="worker">
+                            <input type="number" name="n1" required value="5" />
+                            <select name="op" required>
+                                <option value="+">+</option>
+                                <option value="-">-</option>
+                                <option value="*">*</option>
+                                <option value="/">/</option>
+                                <option value="%">%</option>
+                            </select>
+                            <input  type="number" name="n2" required value="5" />
+                            <button type="submit">Számolj!</button>
+                        </form>
+                        <textarea name="worker-result" id="worker-result" cols="30" rows="10" readonly></textarea>
                     </div>
                     <div class="box">
                         <h2>Server-Sent Events</h2>
