@@ -127,7 +127,7 @@ function renderTable(data, structure) {
 }
 
 // Storage megoldás
-const store = new webStorage('webprog1-ea', initialData);
+const store = new webStorage('webprog1-ea-tablazat', initialData);
 
 // Ha betöltődött az oldal
 renderTable(store.getItems(), tableStructure);
