@@ -91,4 +91,28 @@ document.querySelectorAll(".dnd-container").forEach(container => {
         const draggedElement = document.querySelector(".dragging");
         this.appendChild(draggedElement);
     });
-})
+});
+
+// Canvas feladat
+
+const canvas = document.getElementById('canvas-result');
+
+function getRandomColor() {
+    return '#' + (Math.random() * 0xFFFFFF << 0).toString(16);
+}
+
+function drawCanvas(canvas) {
+    const ctx = canvas.getContext('2d');
+
+    // Hom'lzos eredm;nz javt'si kis;rlet
+    ctx.imageSmoothingQuality = 'high';
+
+    for (let i = 0; i < 5; i++) {
+        ctx.beginPath();
+        ctx.arc(Math.random() * canvas.width, Math.random() * canvas.height, Math.random() * (30 - 5) + 5, 0, 2 * Math.PI);
+        ctx.fillStyle = getRandomColor();
+        ctx.fill();
+    }
+}
+
+document.getElementById('canvas-add').addEventListener('click', () => drawCanvas(canvas));

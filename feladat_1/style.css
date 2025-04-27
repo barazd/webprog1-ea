@@ -317,3 +317,8 @@ footer .by {
     background: navy;
     cursor: grabbing !important;
 }
+#canvas-result {
+    background: white;
+    width: 100%;
+    aspect-ratio: 2 / 1;
+}
