@@ -44,6 +44,9 @@ class People {
             this._people.forEach((person) => {
                 this.peopleEl.appendChild(this.createPersonNode(person));
             });
+            // Nem túl elegáns statisztika
+            const sum = this._people.reduce((sum, person) => sum + Number(person.height), 0);
+            document.getElementById('people-stat').innerHTML = `Magasság statisztika: összeg = ${sum} | átlag = ${sum / this._people.length} | legnagyobb = ${this._people.reduce((max, person) => person.height > max ? person.height : max, 0)}`; // Nem túl elegáns megoldás
         }
         else {
             this.peopleEl.innerHTML = '<tr><td colspan="5"><em>Nincs kirenderelhető adat!</em></td></tr>'
@@ -66,18 +69,21 @@ class People {
 
         // Gombok cellája
         const tdbtn = document.createElement('td');
+        tdbtn.classList.add('buttons');
 
         // Törlés gomb
         const delbtn = document.createElement('button');
-        delbtn.classList.add('delete');
-        delbtn.innerText = 'Törlés';
+        delbtn.classList.add('item-delete');
+        delbtn.setAttribute('title', 'Törlés');
+        delbtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M9.808 17h1V8h-1zm3.384 0h1V8h-1zM6 20V6H5V5h4v-.77h6V5h4v1h-1v14z"/></svg>'
         delbtn.addEventListener('click', () => this.deletePerson(person.id));
         tdbtn.appendChild(delbtn);
 
         // Szerkesztés gomb
         const editbtn = document.createElement('button');
-        editbtn.classList.add('edit');
-        editbtn.innerText = 'Szerkesztés';
+        editbtn.classList.add('item-edit');
+        delbtn.setAttribute('title', 'Szerkesztés');
+        editbtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M4 13.885V8.769h7.5v5.116zm0-6.116V4h16v3.77zM4 20v-5.115h7.5V20zm8.5-6.116V8.77h7.304v1.039l-4.102 4.077zM13.23 21v-2.21l5.96-5.934l2.19 2.204L15.44 21zm5.96-4.985l.925-.956l-.924-.943l-.95.95z"/></svg>';
         editbtn.addEventListener('click', () => this.editPerson(person.id));
         tdbtn.appendChild(editbtn);
 

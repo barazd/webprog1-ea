@@ -32,7 +32,9 @@
                         <h2>AJAX</h2>
                         <p>A CORS hibák elkerülése végett ReverseProxy-n keresztül csatlakozó AJAX CRUD funkcionalitás.</p>
                         <p><button id="new-item">Új személy</button></p>
-                        <table class="people-table">
+                    </div>
+                    <div class="box">
+                        <table class="table">
                             <thead>
                                 <tr>
                                     <th>ID</th>
@@ -48,11 +50,8 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <div class="add-person">
-                            <form id="add-person">
-                                <input type="text" name="title" placeholder="Új feladat" required />
-                                <button type="submit">Hozzáadás</button>
-                            </form>
+                        <div class="filter">
+                            <p id="people-stat">Magasság statisztika: n/a</p>
                         </div>
                     </div>
                     
