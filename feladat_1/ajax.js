@@ -6,16 +6,11 @@ class People {
         this.base =  base || '/ajax2/';
         this.secret =  secret || 'BE4RVPkd58w5dw';
 
-        this.readPeople();
+        this.reRenderTable();
     }
 
-    // Inicializálás, létrehozáskor elemek feltöltése és az első kirajzolás
-    init() {
-        this._people = this.readPeople();
-    }
-
-    fetchApi(endpoint, params = {}) {
-        return fetch(this.base, {
+    async fetchApi(endpoint, params = {}) {
+        return await fetch(this.base, {
             method: 'POST',
             headers:{
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -45,9 +40,14 @@ class People {
 
     renderTable() {
         this.peopleEl.innerHTML = '';
-        this._people.forEach((person) => {
-            this.peopleEl.appendChild(this.createPersonNode(person));
-        });
+        if (this._people.length) {
+            this._people.forEach((person) => {
+                this.peopleEl.appendChild(this.createPersonNode(person));
+            });
+        }
+        else {
+            this.peopleEl.innerHTML = '<tr><td colspan="5"><em>Nincs kirenderelhető adat!</em></td></tr>'
+        }
     }
 
     // Node létrehozása + eseményfigyelők létrehozása
@@ -78,7 +78,7 @@ class People {
         const editbtn = document.createElement('button');
         editbtn.classList.add('edit');
         editbtn.innerText = 'Szerkesztés';
-        editbtn.addEventListener('click', () => this.deletePerson(person.id));
+        editbtn.addEventListener('click', () => this.editPerson(person.id));
         tdbtn.appendChild(editbtn);
 
         node.appendChild(tdbtn);
@@ -86,17 +86,32 @@ class People {
         return node;
     }
 
-    readPeople() {
-        this.fetchApi('read').then(people => {
-            this._people = people.list;
+    reRenderTable() {
+        //console.log(this.readPeople())
+        this.readPeople().then((people) => {
+            this._people = people;
             this.renderTable();
         });
     }
 
-    createPerson(person) {
-        this.fetchApi('create', Object.fromEntries(person)).then(response => {
+    readPeople() {
+        return this.fetchApi('read').then(people => {
+            return people.list;
+        });
+    }
+
+    getPerson(id) {
+        return this._people.find((person) => person.id == id);
+    }
+
+    editPerson(id) {
+        openModal(id);
+    }
+    
+    updatePerson(person) {
+        this.fetchApi('update', Object.fromEntries(person)).then(response => {
             if (response == 1) {
-                this.readPeople();
+                this.reRenderTable();
                 return true;
             }
             else {
@@ -105,14 +120,28 @@ class People {
         });
     }
 
-    deleteTask(id) {
-        this.deleteItem(id);
-        this.todoEl.removeChild(this.todoEl.querySelector(`.task[data-id="${id}"]`));
+    createPerson(person) {
+        this.fetchApi('create', Object.fromEntries(person)).then(response => {
+            if (response == 1) {
+                this.reRenderTable();
+                return true;
+            }
+            else {
+                return false;
+            }
+        });
     }
 
-    createTask(title) {
-        const task = this.createItem({title, completed: false});
-        this.todoEl.appendChild(this.createTaskNode(task));
+    deletePerson(id) {
+        this.fetchApi('delete', { id }).then(response => {
+            if (response == 1) {
+                this.reRenderTable();
+                return true;
+            }
+            else {
+                return false;
+            }
+        });
     }
 }
 
@@ -157,7 +186,7 @@ form.onsubmit = (event) => {
 
     // Ha van ID frisstünk, ha nincs újat hozunk létre
     if(formData.get('id')) {
-        people.updatePerson(formData.get('id'), formData);
+        people.updatePerson(formData);
     }
     else {
         people.createPerson(formData);

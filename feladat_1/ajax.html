@@ -30,7 +30,7 @@
                 <div class="content">
                     <div class="box">
                         <h2>AJAX</h2>
-                        <p>A <code>webStorage</code> osztályból lett származtatva egy <code>Todo</code> osztály, ami teljesen objektum-orientáltan kezeli az alábbi teendők listát, és az azon végezhető műveleteket, miközben szinkronban tartja a <code>localStoarge</code>-ban tárolt adatokat.</p>
+                        <p>A CORS hibák elkerülése végett ReverseProxy-n keresztül csatlakozó AJAX CRUD funkcionalitás.</p>
                         <p><button id="new-item">Új személy</button></p>
                         <table class="people-table">
                             <thead>
@@ -43,7 +43,9 @@
                                 </tr>
                             </thead>
                             <tbody id="people">
-
+                                <tr>
+                                    <td colspan="5"><em>Betöltés...</em></td>
+                                </tr>
                             </tbody>
                         </table>
                         <div class="add-person">
@@ -57,8 +59,8 @@
                 </div>
                 <aside>
                     <div class="box">
-                        <h2>Oldalsáv</h2>
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Repellendus, amet optio deleniti aliquid laboriosam quas beatae quod quam libero repudiandae, dolor nihil quaerat, totam alias saepe numquam quidem? Voluptates, nostrum.</p>
+                        <h2>Megjegyzés</h2>
+                        <p>Objektum orientált megoldás az OOJS feladat mintájára, ezért tudják magukról az elemek, hogy milyen értékeik vannak, így nem lett <code>getDataFormId</code> gomb készítve.</p>
                     </div>
                 </aside>
             </div>  
