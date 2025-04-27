@@ -36,27 +36,63 @@
                     </div>
                     <div class="box">
                         <h2>Web Workers</h2>
-                        <p>...</p>
+                        <p>Ez egy egyszerű számológép, ami ki lett szervezve... és nagyon lassan számol.</p>
+                        <form id="worker">
+                            <input type="number" name="n1" required value="5" />
+                            <select name="op" required>
+                                <option value="+">+</option>
+                                <option value="-">-</option>
+                                <option value="*">*</option>
+                                <option value="/">/</option>
+                                <option value="%">%</option>
+                            </select>
+                            <input  type="number" name="n2" required value="5" />
+                            <button type="submit">Számolj!</button>
+                        </form>
+                        <textarea name="worker-result" id="worker-result" cols="30" rows="10" readonly></textarea>
                     </div>
                     <div class="box">
                         <h2>Server-Sent Events</h2>
-                        <p>...</p>
+                        <p>Egy konténerben futó <a href="https://github.com/enkot/SSE-Fake-Server" target="_blank">SSE Fake</a> szerverről kapjuk meg az időt véletlen időközönként.</p>
+                        <textarea name="sse-result" id="worker-result" cols="30" rows="10" readonly></textarea>
                     </div>
                     <div class="box">
                         <h2>Geolocation API</h2>
-                        <p>...</p>
+                        <p>Ha adsz hozzáfrést, megmondom, hogy hol vagy (vagy az internet szolgáltatód hol van). <button id="geocode-get">Gyerünk!</button></p>
+                        <div id="geocode-result">
+                            <p><em>Még nem kérdeztél le geolokációt...</em></p>
+                        </div>
+                        <p>(A kód a <a href="https://nominatim.org/" target="_blank">Nominatim API</a>-on keresztül, az OSM adatbázisából dolgozik.)</p>
                     </div>
                     <div class="box">
                         <h2>Drag and Drop API</h2>
-                        <p>...</p>
+                        <p>Húzd át az elemekt az egyik gyűjtőből a másikba.</p>
+                        <div class="dnd-wrapper">
+                            <div class="dnd-container">
+                                <div class="draggable" draggable="true">A</div>
+                                <div class="draggable" draggable="true">1</div>
+                                <div class="draggable" draggable="true">C</div>
+                                <div class="draggable" draggable="true">3</div>
+                                <div class="draggable" draggable="true">E</div>
+                            </div>
+                            <div class="dnd-container">
+                                <div class="draggable" draggable="true">2</div>
+                                <div class="draggable" draggable="true">B</div>
+                                <div class="draggable" draggable="true">4</div>
+                                <div class="draggable" draggable="true">D</div>
+                                <div class="draggable" draggable="true">5</div>
+                            </div>
+                        </div>
                     </div>
                     <div class="box">
                         <h2>Canvas</h2>
-                        <p>...</p>
+                        <p>Ha a gombra kattintasz, akkor az 5 véletlenszerű pöttyöt rak a rajzvászonra. <button id="canvas-add">Rajzolj!</button></p>
+                        <canvas id="canvas-result"></canvas>
                     </div>
                     <div class="box">
                         <h2>SVG</h2>
-                        <p>...</p>
+                        <p>Ha a gombra kattintasz, akkor az 5 véletlenszerű pöttyöt rak ay SVG-be. <button id="svg-add">Rajzolj!</button></p>
+                        <svg id="svg-result"></svg>
                     </div>
                 </div>
                 <aside>
