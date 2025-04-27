@@ -62,3 +62,14 @@ function getGeocode(postion) {
         + '</ul>';
     });
 }
+
+// SSE feladat
+
+if (window.EventSource) {
+    const sse = new EventSource("http://localhost:5555/stream");
+    const sseResult = document.getElementById('sse-result');
+    
+    sse.addEventListener('message', function(event) {
+        sseResult.value += event.data + '\n';
+    });
+}
