@@ -28,8 +28,8 @@ if (window.Worker) {
     // Üzenet küldése
     workerForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        console.log([e, e.target.elements.namedItem('n1').value,  e.target.elements.namedItem('n2').value,  e.target.elements.namedItem('op').value])
-        worker.postMessage([e.target.elements.namedItem('n1').value,  e.target.elements.namedItem('n2').value,  e.target.elements.namedItem('op').value]);
+        console.log([e, e.target.elements.namedItem('n1').value, e.target.elements.namedItem('n2').value, e.target.elements.namedItem('op').value])
+        worker.postMessage([e.target.elements.namedItem('n1').value, e.target.elements.namedItem('n2').value, e.target.elements.namedItem('op').value]);
     });
 
     // Üzenet fogadása
@@ -55,12 +55,12 @@ function getLocation() {
 
 function getGeocode(postion) {
     fetch(`https://nominatim.openstreetmap.org/reverse?lat=${postion.coords.latitude}&lon=${postion.coords.longitude}&zoom=16&format=json`)
-    .then(response => response.json())
-    .then(data => {
-        geocodeResult.innerHTML = '<ul>' + 
-            Object.entries(data.address).reduce((html, [key, value]) => html +`<li><strong>${key}:</strong> ${value}</li>`, '')
-        + '</ul>';
-    });
+        .then(response => response.json())
+        .then(data => {
+            geocodeResult.innerHTML = '<ul>' +
+                Object.entries(data.address).reduce((html, [key, value]) => html + `<li><strong>${key}:</strong> ${value}</li>`, '')
+                + '</ul>';
+        });
 }
 
 // SSE feladat
@@ -68,8 +68,27 @@ function getGeocode(postion) {
 if (window.EventSource) {
     const sse = new EventSource("http://localhost:5555/stream");
     const sseResult = document.getElementById('sse-result');
-    
-    sse.addEventListener('message', function(event) {
+
+    sse.addEventListener('message', function (event) {
         sseResult.value += event.data + '\n';
     });
 }
+
+// Drag and Drop feladat
+document.querySelectorAll(".draggable").forEach(draggable => {
+    // Megragad
+    draggable.addEventListener("dragstart", function () {
+        this.classList.add("dragging");
+    });
+    // Elenged
+    draggable.addEventListener("dragend", function () {
+        this.classList.remove("dragging");
+    });
+});
+
+document.querySelectorAll(".dnd-container").forEach(container => {
+    container.addEventListener("dragover", function () {
+        const draggedElement = document.querySelector(".dragging");
+        this.appendChild(draggedElement);
+    });
+})

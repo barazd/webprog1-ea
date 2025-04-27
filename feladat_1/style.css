@@ -278,3 +278,42 @@ footer .by {
     text-align: left;
     vertical-align: middle;
 }
+
+/* HTML5 feladat */
+.dnd-wrapper {
+    display: flex;
+    gap: 4rem;
+    justify-content: space-between;
+}
+.dnd-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(5rem, 1fr));
+    grid-template-rows: masonry;
+    place-content: space-around;
+    padding: 1rem;
+    gap: 1rem;
+    width: 100%;
+    aspect-ratio : 1 / 1;
+    border: 4px dashed lightgray;
+    border-radius: 2rem;
+}
+.draggable {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: darkslateblue;
+    color: white;
+    font-weight: bold;
+    font-size: 2rem;
+    width: 5rem;
+    height: 5rem;
+    border-radius: .5rem;
+}
+.draggable:hover {
+    background: purple;
+    cursor: grab;
+}
+.draggable.dragging {
+    background: navy;
+    cursor: grabbing !important;
+}
