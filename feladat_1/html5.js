@@ -37,4 +37,28 @@ if (window.Worker) {
         document.getElementById('worker-result').value += e.data;
     };
 }
-  
+
+// Geolocation-ös feladat
+
+const geocodeResult = document.getElementById('geocode-result');
+
+document.getElementById('geocode-get').addEventListener('click', getLocation);
+
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(getGeocode);
+    }
+    else {
+        geocodeResult.innerHTML = '<p><strong>A geolokáció le van tiltva!</strong></p>';
+    }
+}
+
+function getGeocode(postion) {
+    fetch(`https://nominatim.openstreetmap.org/reverse?lat=${postion.coords.latitude}&lon=${postion.coords.longitude}&zoom=16&format=json`)
+    .then(response => response.json())
+    .then(data => {
+        geocodeResult.innerHTML = '<ul>' + 
+            Object.entries(data.address).reduce((html, [key, value]) => html +`<li><strong>${key}:</strong> ${value}</li>`, '')
+        + '</ul>';
+    });
+}
