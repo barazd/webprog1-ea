@@ -6,20 +6,12 @@ class People {
         this.base =  base || '/ajax2/';
         this.secret =  secret || 'BE4RVPkd58w5dw';
 
-        this.init();
+        this.readPeople();
     }
 
     // Inicializálás, létrehozáskor elemek feltöltése és az első kirajzolás
     init() {
         this._people = this.readPeople();
-        /*this._tasks.forEach((task) => {
-            this.todoEl.appendChild(this.createTaskNode(task));
-        });
-
-        // Az adatszerkezet pariban tartása
-        this.on("updated", () => {
-            this._tasks = this.getItems();
-        });*/
     }
 
     fetchApi(endpoint, params = {}) {
@@ -51,40 +43,66 @@ class People {
         });
     }
 
-    readPeople() {
-        const people = this.fetchApi('read').then(people => {
-            people.list.forEach(person => {
-                console.log(person);
-            });
+    renderTable() {
+        this.peopleEl.innerHTML = '';
+        this._people.forEach((person) => {
+            this.peopleEl.appendChild(this.createPersonNode(person));
         });
     }
 
-    // Task node létrehozása + eseményfigyelők létrehozása
-    /*createTaskNode(task) {
-        const node = document.createElement('div');
-        node.classList.add('task');
-        node.setAttribute('data-id', task.id);
+    // Node létrehozása + eseményfigyelők létrehozása
+    createPersonNode(person) {
+        const node = document.createElement('tr');
+        node.setAttribute('data-id', person.id);
 
-        // Checkbox
-        const checkbox = document.createElement('input');rowCount
-        checkbox.setAttribute('type', 'checkbox');
-        if (task.completed) checkbox.setAttribute('checked', true);
-        checkbox.addEventListener('change', () => this.completeTask(task.id));
-        node.appendChild(checkbox);
+        // Táblázat oszlopai
+        Object.entries(person).forEach(([key, value]) => {
+            if (['id', 'name', 'height', 'weight'].includes(key)) {
+                const td = document.createElement('td');
+                td.innerText = value;
+                node.appendChild(td);
+            }
+        });
 
-        // Szöveg
-        const title = document.createElement('span');
-        title.innerText = task.title;
-        node.appendChild(title);
+        // Gombok cellája
+        const tdbtn = document.createElement('td');
 
         // Törlés gomb
-        const btn = document.createElement('button');
-        btn.classList.add('delete-task');
-        btn.innerText = 'Törlés';
-        btn.addEventListener('click', () => this.deleteTask(task.id));
-        node.appendChild(btn);
+        const delbtn = document.createElement('button');
+        delbtn.classList.add('delete');
+        delbtn.innerText = 'Törlés';
+        delbtn.addEventListener('click', () => this.deletePerson(person.id));
+        tdbtn.appendChild(delbtn);
+
+        // Szerkesztés gomb
+        const editbtn = document.createElement('button');
+        editbtn.classList.add('edit');
+        editbtn.innerText = 'Szerkesztés';
+        editbtn.addEventListener('click', () => this.deletePerson(person.id));
+        tdbtn.appendChild(editbtn);
+
+        node.appendChild(tdbtn);
 
         return node;
+    }
+
+    readPeople() {
+        this.fetchApi('read').then(people => {
+            this._people = people.list;
+            this.renderTable();
+        });
+    }
+
+    createPerson(person) {
+        this.fetchApi('create', Object.fromEntries(person)).then(response => {
+            if (response == 1) {
+                this.readPeople();
+                return true;
+            }
+            else {
+                return false;
+            }
+        });
     }
 
     deleteTask(id) {
@@ -95,7 +113,54 @@ class People {
     createTask(title) {
         const task = this.createItem({title, completed: false});
         this.todoEl.appendChild(this.createTaskNode(task));
-    }*/
+    }
 }
 
+// Emberek létrehozása
 const people = new People('people')
+
+// Felugró ablak kezelése
+
+const form = document.getElementById('person-edit');
+const modal = document.getElementById('person-modal');
+
+function openModal(id = null) {
+    // Űrlap kitöltése ha van id
+    if(id) {
+        const item = people.getPerson(id);
+        Object.entries(item).forEach(([key, value]) => form.elements.namedItem(key) && (form.elements.namedItem(key).value = value));
+    }
+    modal.classList.remove('hidden');
+}
+
+function closeModal() {
+    // TODO: Űrlap ürítése
+    form.reset();
+    modal.classList.add('hidden');
+}
+
+// Bezárás figyelése
+modal.addEventListener('click', () => closeModal());
+modal.querySelector('.box').addEventListener('click', (e) => e.stopPropagation()); // Hogy ne záródjon be ha kattingatunk a felugró ablakban
+document.getElementById('close-modal').addEventListener('click', () => closeModal());
+
+// Új elem gomb figyelése
+document.getElementById('new-item').addEventListener('click', () => openModal());
+
+// Űrlap kezelése
+form.onsubmit = (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+
+    console.log(formData);
+
+    // Ha van ID frisstünk, ha nincs újat hozunk létre
+    if(formData.get('id')) {
+        people.updatePerson(formData.get('id'), formData);
+    }
+    else {
+        people.createPerson(formData);
+    }
+    closeModal();
+}

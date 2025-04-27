@@ -31,9 +31,21 @@
                     <div class="box">
                         <h2>AJAX</h2>
                         <p>A <code>webStorage</code> osztályból lett származtatva egy <code>Todo</code> osztály, ami teljesen objektum-orientáltan kezeli az alábbi teendők listát, és az azon végezhető műveleteket, miközben szinkronban tartja a <code>localStoarge</code>-ban tárolt adatokat.</p>
-                        <div id="people">
+                        <p><button id="new-item">Új személy</button></p>
+                        <table class="people-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Név</th>
+                                    <th>Magasság</th>
+                                    <th>Súly</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="people">
 
-                        </div>
+                            </tbody>
+                        </table>
                         <div class="add-person">
                             <form id="add-person">
                                 <input type="text" name="title" placeholder="Új feladat" required />
@@ -57,6 +69,33 @@
                 <p>2025. 04. 21.</p>
             </div>
         </footer>
+    </div>
+
+    <div class="modal-wrapper hidden" id="person-modal">
+        <div class="box">
+            <form action="" id="person-edit">
+                <div class="form-value">
+                    <div class="label"><label for="id">ID</label></div>
+                    <div class="input"><input type="text" name="id" readonly /></div>
+                </div>
+                <div class="form-value">
+                    <div class="label"><label for="name">Név</label></div>
+                    <div class="input"><input type="text" name="name" required /></div>
+                </div>
+                <div class="form-value">
+                    <div class="label"><label for="height">Magasság</label></div>
+                    <div class="input"><input type="number" name="height" required /></div>
+                </div>
+                <div class="form-value">
+                    <div class="label"><label for="weight">Súly</label></div>
+                    <div class="input"><input type="number" name="weight" required /></div>
+                </div>
+                <div class="form-value">
+                    <div class="label"></div>
+                    <div class="input"><a href="#" id="close-modal">Mégsem</a> <button type="submit">Mentés</button></div>
+                </div>
+            </form>
+        </div>
     </div>
 </body>
 </html>
