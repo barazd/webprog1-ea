@@ -2,8 +2,8 @@ import webStorage from './webStorage.js';
 
 // "alap" feladat osztály
 export default class Todo extends webStorage {
-    constructor(el) {
-        super('webprog1-ea-oojs', [{id: 1, title: 'Feladat 1', completed: false}, {id: 2, title: 'Feladat 2', completed: false}]); // Létrehozzuk a storage-ot
+    constructor(el, initialData = []) {
+        super('webprog1-ea-oojs',initialData); // Létrehozzuk a storage-ot
 
         this.todoEl = document.getElementById(el);
         this._tasks = [];
