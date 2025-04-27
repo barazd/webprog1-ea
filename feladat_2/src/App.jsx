@@ -1,4 +1,4 @@
-import { Link, Route, Switch, Redirect, useLocation } from 'wouter'
+import { Link, Router, Route, Switch, Redirect, useLocation } from 'wouter'
 
 import TalaldKi from './components/TalaldKi'
 import Aknakereso from './components/Aknakereso'
@@ -17,13 +17,13 @@ function App() {
                         <h1>Web-programozás-1 Előadás Házi feladat</h1>
                         <nav>
                             <ul>
-                                <li><a href="https://webprog1-ea-f1.baraz.hu/index.html" target="_blank" className="newpage">Kezdőlap</a></li>
-                                <li><a href="https://webprog1-ea-f1.baraz.hu/tablazat.html" target="_blank" className="newpage">Táblázat</a></li>
-                                <li><a href="https://webprog1-ea-f1.baraz.hu/html5.html" target="_blank" className="newpage">HTML5</a></li>
-                                <li><a href="https://webprog1-ea-f1.baraz.hu/chartjs.html" target="_blank" className="newpage">ChartJS</a></li>
-                                <li><a href="https://webprog1-ea-f1.baraz.hu/ajax.html" target="_blank" className="newpage">AJAX</a></li>
-                                <li><a href="https://webprog1-ea-f1.baraz.hu/oojs.html" target="_blank" className="newpage">OOJS</a></li>
-                                <li><a href="/" className="active" >React</a></li>
+                                <li><a href="/feladat_1/index.html" target="_blank" className="newpage">Kezdőlap</a></li>
+                                <li><a href="/feladat_1/tablazat.html" target="_blank" className="newpage">Táblázat</a></li>
+                                <li><a href="/feladat_1/html5.html" target="_blank" className="newpage">HTML5</a></li>
+                                <li><a href="/feladat_1/chartjs.html" target="_blank" className="newpage">ChartJS</a></li>
+                                <li><a href="/feladat_1/ajax.html" target="_blank" className="newpage">AJAX</a></li>
+                                <li><a href="/feladat_1/oojs.html" target="_blank" className="newpage">OOJS</a></li>
+                                <li><a href="/feladat_2" className="active" >React</a></li>
                             </ul>
                         </nav>
                     </div>
@@ -33,27 +33,30 @@ function App() {
                         <div className="content">
                             <div className="tabs">
                                 <span><em>Válassz játékot &rarr;</em></span>
-                                <Link href="/talald-ki" className={location === "/talald-ki" ? 'active' : ''}>Találd ki</Link>
-                                <Link href="/aknakereso" className={location === "/aknakereso" ? 'active' : ''}>Aknakereső</Link>
+                                <Router base="/feladat_2">
+                                    <Link href="/talald-ki" className={location === "/feladat_2/talald-ki" ? 'active' : ''}>Találd ki</Link>
+                                    <Link href="/aknakereso" className={location === "/feladat_2/aknakereso" ? 'active' : ''}>Aknakereső</Link>
+                                </Router>
                             </div>
 
-                            <Switch>
-                                <Route path="/">
-                                    <Redirect to="/talald-ki" />
-                                </Route>
+                            <Router base="/feladat_2">
+                                <Switch>
+                                    <Route path="/">
+                                        <Redirect to="/talald-ki" />
+                                    </Route>
 
-                                <Route path="/talald-ki" component={TalaldKi} />
+                                    <Route path="/talald-ki" component={TalaldKi} />
 
-                                <Route path="/aknakereso" component={Aknakereso} />
+                                    <Route path="/aknakereso" component={Aknakereso} />
 
-                                /* Alapértelmezett útvonal */
-                                <Route>
-                                    <div className="box">
-                                        <h2>404-es hiba</h2>
-                                        <p>Az oldal nem található!</p>
-                                    </div>
-                                </Route>
-                            </Switch>
+                                    <Route>
+                                        <div className="box">
+                                            <h2>404-es hiba</h2>
+                                            <p>Az oldal nem található!</p>
+                                        </div>
+                                    </Route>
+                                </Switch>
+                            </Router>
                         </div>
                         <aside>
                             <div className="box">
