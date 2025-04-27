@@ -116,3 +116,15 @@ function drawCanvas(canvas) {
 }
 
 document.getElementById('canvas-add').addEventListener('click', () => drawCanvas(canvas));
+
+// SVG feladat
+
+const svg = document.getElementById('svg-result');
+
+function drawSVG(canvas) {
+    for (let i = 0; i < 5; i++) {
+        canvas.innerHTML += (`<circle cx="${Math.random() * canvas.clientWidth}" cy="${Math.random() * canvas.clientHeight}" r="${Math.random() * (30 - 5) + 5}" fill="${getRandomColor()}" />`);
+    }
+}
+
+document.getElementById('svg-add').addEventListener('click', () => drawSVG(svg));
