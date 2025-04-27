@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "sse-fake-server": "^1.0.4"
+  }
+}
