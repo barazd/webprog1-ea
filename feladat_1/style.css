@@ -328,3 +328,33 @@ footer .by {
     width: 100%;
     aspect-ratio: 2 / 1;
 }
+
+/* OOJS feladat */
+#todo {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid lightgray;
+}
+#todo .task {
+    display: flex;
+    justify-content: stretch;
+    gap: 1rem;
+    align-items: center;
+    padding: .5rem 0;
+    border-bottom: 1px solid lightgray;
+}
+#todo .task input, #todo .task span, #todo .task button {
+    display: flex;
+    flex: none;
+}
+#todo .task span {
+    flex-grow: 1;
+    font-size: 1.2rem;
+}
+#todo .task button.delete-task {
+    font-size: .8rem;
+    color: red;
+    padding: .2rem .4rem;
+    border: 1px solid dimgray;
+    border-radius: .5rem;
+}

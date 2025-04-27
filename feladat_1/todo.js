@@ -26,7 +26,8 @@ export default class Todo extends webStorage {
 
     // Task node létrehozása + eseményfigyelők létrehozása
     createTaskNode(task) {
-        const node = document.createElement('li');
+        const node = document.createElement('div');
+        node.classList.add('task');
         node.setAttribute('data-id', task.id);
 
         // Checkbox
@@ -52,8 +53,8 @@ export default class Todo extends webStorage {
     }
 
     deleteTask(id) {
-        console.log('del task' + id)
-        
+        this.deleteItem(id);
+        this.todoEl.removeChild(this.todoEl.querySelector(`.task[data-id="${id}"]`));
     }
 
     createTask(title) {
