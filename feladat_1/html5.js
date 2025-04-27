@@ -1,22 +1,36 @@
 // Web Storage feladat
-import webStorage from './webStorage.js';
 
-// Storage megoldás
-const store = new webStorage('webprog1-ea', []);
+function getStorageInfo(query = '#storage-info') {
+    const storages = { ...localStorage }; // Összes storage sima objektumként
 
-// Ha betöltődött az oldal
-document.addEventListener("DOMContentLoaded", () => {
-    document.querySelector('#storageLength').innerHTML = store.length();
-    document.querySelector('#truncateStore').onclick = () => {
-        store.truncate();
-        document.querySelector('#storageLength').innerHTML = store.length();
-    };
-    document.querySelector('#deleteStore').onclick = () => {
-        store.destroy();
-        document.querySelector('#storageLength').innerHTML = '<em>localStorage törölve...<em>';
-    };
-});
+    const ul = document.querySelector(query);
+    ul.innerHTML = ''; // töröljük ha volt benne bármi
 
+    Object.entries(storages).forEach(([key, value]) => {
+        const li = document.createElement('li');
+        li.innerText = `${key} (${JSON.parse(value).length} db elem)`;
+
+        const truncateButton = document.createElement('button');
+        truncateButton.innerText = 'Kiürtés';
+        truncateButton.addEventListener('click', () => {
+            localStorage.setItem(key, JSON.stringify([]));
+            getStorageInfo(query);
+        });
+        li.appendChild(truncateButton);
+
+        const deleteButton = document.createElement('button');
+        deleteButton.innerText = 'Storage törlése';
+        deleteButton.addEventListener('click', () => {
+            localStorage.removeItem(key);
+            getStorageInfo(query)
+        });
+        li.appendChild(deleteButton);
+
+        ul.appendChild(li);
+    });
+}
+
+getStorageInfo('#storage-info');
 
 // Web worker feladat
 

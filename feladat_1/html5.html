@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web-programozás-1 Előadás Házi feladat</title>
     <link rel="stylesheet" href="style.css">
-    <script type="module" src="html5.js"></script>
+    <script type="module" src="html5.js" defer></script>
 </head>
 <body>
     <div class="wrapper">
@@ -30,9 +30,12 @@
                 <div class="content">
                     <div class="box">
                         <h2>Web Storage</h2>
-                        <p>Lásd <a href="tablazat.html">Táblázat</a> oldal: a táblázat sorai egy <code>localStorage</code>-ban szérializált JSON.ben vannak tárolva.</p>
-                        <p>Jelenleg összesen <span id="storageLength">0</span> sornyi adat van letárolva. <button id="truncateStore">Összes elem törlése</button></p>
-                        <p><button id="deleteStore">localStorage kiürtése</button> &rarr; a <a href="tablazat.html">Táblázat</a> oldal megnyitására újra feltöltésre kerül az alapadatokkal a storage és a táblázat</p>
+                        <p>Lásd <a href="tablazat.html">Táblázat</a> oldal: a táblázat sorai egy <code>localStorage</code>-ban szérializált JSON-ben vannak tárolva.</p>
+                        <p>Lásd <a href="oojs.html">OOJS</a> oldal: a Todo feladatok egy <code>localStorage</code>-ban szérializált JSON-ben vannak tárolva.</p>
+                        <p>Ha már a fenti oldalokon létre lett a <code>localStorage</code> hozva, akkor az alábbiakban lehet kezelni őket. A Storage törlésével elérhető, hogy a fenti oldalak újratöltésével ismét létrehozza storage-okat a kód, és feltöltse azokat a kezdőértékekkel.</p>
+                        <ul id="storage-info">
+                            <li><em>Jelenleg nincs egy localStorage sem!</em></li>
+                        </ul>
                     </div>
                     <div class="box">
                         <h2>Web Workers</h2>
