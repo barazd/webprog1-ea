@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web-programozás-1 Előadás Házi feladat</title>
     <link rel="stylesheet" href="style.css">
-    <script type="module" src="tablazat.js" defer></script>
+    <script type="module" src="ajax.js" defer></script>
 </head>
 <body>
     <div class="wrapper">
@@ -15,10 +15,10 @@
                 <nav>
                     <ul>
                         <li><a href="/feladat_1/index.html">Kezdőlap</a></li>
-                        <li><a href="/feladat_1/tablazat.html" class="active">Táblázat</a></li>
+                        <li><a href="/feladat_1/tablazat.html">Táblázat</a></li>
                         <li><a href="/feladat_1/html5.html">HTML5</a></li>
                         <li><a href="/feladat_1/chartjs.html">ChartJS</a></li>
-                        <li><a href="/feladat_1/ajax.html">AJAX</a></li>
+                        <li><a href="/feladat_1/ajax.html" class="active">AJAX</a></li>
                         <li><a href="/feladat_1/oojs.html">OOJS</a></li>
                         <li><a href="/feladat_2/" target="_blank" class="newpage">React</a></li>
                     </ul>
@@ -29,39 +29,37 @@
             <div class="mw-container section">
                 <div class="content">
                     <div class="box">
-                        <h2>Táblázat</h2>
-                        <p><button id="new-item">Új étterem</button></p>
+                        <h2>AJAX</h2>
+                        <p>A CORS hibák elkerülése végett ReverseProxy-n keresztül csatlakozó AJAX CRUD funkcionalitás.</p>
+                        <p><button id="new-item">Új személy</button></p>
                     </div>
                     <div class="box">
-                        <table id="restaurants" class="table">
+                        <table class="table">
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Étterem neve</th>
-                                    <th>Település</th>
-                                    <th>Típus</th>
-                                    <th>Értékelés</th>
+                                    <th>Név</th>
+                                    <th>Magasság</th>
+                                    <th>Súly</th>
                                     <th></th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="people">
                                 <tr>
-                                    <td colspan="6"><em>Nincs megjeleníthető adat!</em></td>
+                                    <td colspan="5"><em>Betöltés...</em></td>
                                 </tr>
                             </tbody>
                         </table>
                         <div class="filter">
-                            <form id="filter">
-                                <input type="text" placeholder="Gyorskeresés" name="query" /> <select name="cols" id="filter-cols"><option value=""><em>Összes oszlop</em></option></select> <button type="reset">Visszaálltás</button> <span id="filter-stat">? / ? elem</span>
-                            </form>
+                            <p id="people-stat">Magasság statisztika: n/a</p>
                         </div>
                     </div>
+                    
                 </div>
                 <aside>
                     <div class="box">
-                        <h2>Információ</h2>
-                        <p>A táblázat mögött egy egyszerű storage controller áll, ami a localStorage-ban tárolja az adatokat szérializált JSON-ben. Ha a storage nem létezik, akkor létrehozza azt egy 5 soros kezdőértékkel (debug lehetőségek a HTML5 oldalon). A táblázat minden eleme esemény alapon működik, ha változik a mögöttes adattartalom, akkor frissül a táblázat stb.
-                        </p>
+                        <h2>Megjegyzés</h2>
+                        <p>Objektum orientált megoldás az OOJS feladat mintájára, ezért tudják magukról az elemek, hogy milyen értékeik vannak, így nem lett <code>getDataFormId</code> gomb készítve.</p>
                     </div>
                 </aside>
             </div>  
@@ -73,38 +71,25 @@
             </div>
         </footer>
     </div>
-    
-    
-    <div class="modal-wrapper hidden" id="tablazat-modal">
+
+    <div class="modal-wrapper hidden" id="person-modal">
         <div class="box">
-            <form action="" id="tablazat-edit">
+            <form action="" id="person-edit">
                 <div class="form-value">
                     <div class="label"><label for="id">ID</label></div>
                     <div class="input"><input type="text" name="id" readonly /></div>
-                    <span></span>
                 </div>
                 <div class="form-value">
-                    <div class="label"><label for="name">Étterem neve</label></div>
+                    <div class="label"><label for="name">Név</label></div>
                     <div class="input"><input type="text" name="name" required /></div>
-                    <span></span>
                 </div>
                 <div class="form-value">
-                    <div class="label"><label for="city">Település</label></div>
-                    <div class="input"><input type="text" name="city" required /></div>
-                    <span></span>
+                    <div class="label"><label for="height">Magasság</label></div>
+                    <div class="input"><input type="number" name="height" required /></div>
                 </div>
                 <div class="form-value">
-                    <div class="label"><label for="type">Típus</label></div>
-                    <div class="input">
-                        <select name="type" id="type" required></select>
-                    </div>
-                    <span></span>
-                </div>
-                <div class="form-value">
-                    <div class="label"><label for="rating">Értékelés</label></div>
-                    <div class="input">
-                        <input type="range" name="rating" min="1" max="10" step="1" required /></div>
-                    <span></span>
+                    <div class="label"><label for="weight">Súly</label></div>
+                    <div class="input"><input type="number" name="weight" required /></div>
                 </div>
                 <div class="form-value">
                     <div class="label"></div>
@@ -112,6 +97,6 @@
                 </div>
             </form>
         </div>
-    </div>  
+    </div>
 </body>
 </html>
