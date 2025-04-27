@@ -73,6 +73,7 @@ export default class webStorage extends EventTarget {
         let items = this.getItems();
         items.push(data);
         this.saveItems(items);
+        return data;
     }
 
     updateItem(data) {

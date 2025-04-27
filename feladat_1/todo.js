@@ -6,18 +6,25 @@ export default class Todo extends webStorage {
         super('webprog1-ea-oojs', [{id: 1, title: 'Feladat 1', completed: false}, {id: 2, title: 'Feladat 2', completed: false}]); // Létrehozzuk a storage-ot
 
         this.todoEl = document.getElementById(el);
-        this._todo = [];
+        this._tasks = [];
 
         this.init();
     }
 
+    // Inicializálás, létrehozáskor elemek feltöltése és az első kirajzolás
     init() {
-        this._todo = this.getItems();
-        this._todo.forEach((task) => {
+        this._tasks = this.getItems();
+        this._tasks.forEach((task) => {
             this.todoEl.appendChild(this.createTaskNode(task));
+        });
+
+        // Az adatszerkezet pariban tartása
+        this.on("updated", () => {
+            this._tasks = this.getItems();
         });
     }
 
+    // Task node létrehozása + eseményfigyelők létrehozása
     createTaskNode(task) {
         const node = document.createElement('li');
         node.setAttribute('data-id', task.id);
@@ -25,7 +32,7 @@ export default class Todo extends webStorage {
         // Checkbox
         const checkbox = document.createElement('input');
         checkbox.setAttribute('type', 'checkbox');
-        checkbox.setAttribute('checked', task.checked);
+        if (task.completed) checkbox.setAttribute('checked', true);
         checkbox.addEventListener('change', () => this.completeTask(task.id));
         node.appendChild(checkbox);
 
@@ -50,15 +57,16 @@ export default class Todo extends webStorage {
     }
 
     createTask(title) {
-        console.log('create task' + title)
-
+        const task = this.createItem({title, completed: false});
+        this.todoEl.appendChild(this.createTaskNode(task));
     }
 
     completeTask(id) {
-        console.log('complete task' + id)
-    }
-
-    renderHtml() {
-        return this._todo.reduce((html, task) => html + `<li><input type="checkbox" checked="${task.completed}" data-id="${task.id} /> ${task.title} <button data-id="${task.id}">törlés</button></li>`, '');
+        this.saveItems(this.getItems().map((task) => {
+            if (task.id === id) {
+                task.completed = !task.completed;
+            }
+            return task;
+        }));
     }
 }
