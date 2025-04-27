@@ -1,0 +1,211 @@
+#root {
+    width: 100%;
+    height: 100%;
+}
+
+.hidden {
+    display: none;
+}
+
+.tabs {
+    display: flex;
+    margin: 1rem 1rem -1rem 0;
+    gap: .3rem;
+}
+.tabs a {
+    display: inline-flex;
+    padding: .5rem 1rem;
+    text-decoration: none;
+    border-radius: .5rem .5rem 0 0;
+    color: white;
+}
+.tabs span {
+    display: inline-flex;
+    padding: .5rem 1rem;
+    color: lightsteelblue;
+}
+.tabs a.active {
+    background: azure;
+    color: black;
+    font-weight: bold;
+}
+.tabs a:hover:not(.active) {
+    background: cadetblue;
+    text-decoration: dashed;
+    color: black;
+}
+
+/* Kártyás játék */
+.draw {
+    display: flex;
+    gap: 1rem;
+}
+.card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-top: 1em;
+    width: 7rem;
+    height: 10rem;
+    padding: .5rem;
+    border: 1px solid black;
+    background: white;
+    border-radius: .5rem;
+}
+.card div:last-child {
+    transform: rotate(-180deg);
+
+}
+
+.card:hover:not(.selected) {
+    margin-top: 0;
+    transition: margin-top ease .5s;
+    cursor: pointer;
+}
+
+.card.selected.wrong {
+    box-shadow: 0 0 .4rem red;
+    animation: shakex .5s ease;
+}
+.card.selected.winner {
+    box-shadow: 0 0 .4rem forestgreen;
+    animation: shakey .5s ease;
+}
+
+ul.messages {
+    padding: 0;
+    margin: 0;
+    list-style-position: inside;
+    list-style: none;
+    line-height: 1.6rem;
+}
+ul.messages li.win {
+    color: green;
+    font-weight: bold;
+}
+ul.messages li.wrong {
+    color: darkred;
+}
+ul.messages li::before {
+    padding-right: 1rem;
+    font-size: 1.5rem;
+}
+ul.messages li.win::before {
+    content: '🤩';
+}
+ul.messages li.wrong:nth-child(4n+1)::before {
+    content: '😖';
+}
+ul.messages li.wrong:nth-child(4n+2)::before {
+    content: '😵';
+}
+ul.messages li.wrong:nth-child(4n+3)::before {
+    content: '🤪';
+}
+ul.messages li.wrong::before {
+    content: '🫣';
+}
+
+@keyframes shakex {
+    0% { transform: translateX(0) }
+    30% { transform: translateX(5px) }
+    50% { transform: translateX(-5px) }
+    70% { transform: translateX(5px) }
+    100% { transform: translateX(0) }
+}
+@keyframes shakey {
+    0% { transform: translateY(0) }
+    30% { transform: translateY(5px) }
+    50% { transform: translateY(-5px) }
+    70% { transform: translateY(5px) }
+    100% { transform: translateY(0) }
+}
+
+/* Aknakereső */
+.minewrap {
+    max-width: 100%;
+    overflow-y: hidden;
+    overflow-x: visible;
+    scrollbar-width: thin; 
+}
+.minefield {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    border: .5px solid gray;
+    border-radius: .5rem;
+    overflow: hidden;
+}
+.minefield .row {
+    display: flex;
+    flex-direction: row;
+    border-collapse: collapse;
+}
+.minefield .row .field {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    width: 1.4rem;
+    height: 1.4rem;
+    border: .5px solid gray;
+    border-collapse: collapse;
+    background: lightgray;
+}
+.minefield .row .field:hover {
+    cursor: pointer;
+    background: white;
+}
+.minefield .row .field.hide span {
+    display: none;
+}
+.minefield .row .field span {
+    font-weight: bold;
+}
+.minefield .row .field.value-1 span {
+    color: navy;
+}
+.minefield .row .field.value-2 span {
+    color: green;
+}
+.minefield .row .field.value-3 span {
+    color: red;
+}
+.minefield .row .field.value-4 span {
+    color: purple;
+}
+.minefield .row .field.value-5 span {
+    color: maroon;
+}
+.minefield .row .field.value-6 span {
+    color: teal;
+}
+.minefield .row .field.value-7 span {
+    color: black;
+}
+.minefield .row .field.value-8 span {
+    color: gray;
+}
+.minefield .row .field.show {
+    background: white;
+}
+.minefield .row .field.value-x {
+    animation: pulse 2s infinite ease;
+}
+
+.mine-msg.won {
+    color: forestgreen;
+    font-size: 1.5rem;
+}
+.mine-msg.wasted {
+    color: red;
+    font-size: 1.5rem;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    background-color: white;
+  }
+  50% {
+    background-color: red;
+  }
+}
