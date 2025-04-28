@@ -363,3 +363,41 @@ footer .by {
     border: 1px solid dimgray;
     border-radius: .5rem;
 }
+
+/* AJAX feladat */
+#toast {
+    visibility: hidden;
+    min-width: 250px;
+    margin-left: -125px;
+    background-color: darkgray;
+    color: black;
+    text-align: center;
+    border-radius: .5rem;
+    padding: 1rem 2rem;
+    position: fixed;
+    z-index: 20;
+    left: 50%;
+    bottom: 2rem;
+}
+
+#toast.show {
+    visibility: visible;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+#toast.success {
+    background: lightgreen;
+    color: darkgreen;
+}
+#toast.error {
+    background: lightsalmon;
+    color: darkred;
+}
+
+@keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+@keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}

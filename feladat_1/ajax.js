@@ -118,9 +118,11 @@ class People {
         this.fetchApi('update', Object.fromEntries(person)).then(response => {
             if (response == 1) {
                 this.reRenderTable();
+                this.showToast('success', 'Sikeres frissítés!');
                 return true;
             }
             else {
+                this.showToast('error', 'Sikertelen frissítés!');
                 return false;
             }
         });
@@ -130,9 +132,11 @@ class People {
         this.fetchApi('create', Object.fromEntries(person)).then(response => {
             if (response == 1) {
                 this.reRenderTable();
+                this.showToast('success', 'Sikeres létrehozás!');
                 return true;
             }
             else {
+                this.showToast('error', 'Sikertelen létrehozás!');
                 return false;
             }
         });
@@ -142,12 +146,27 @@ class People {
         this.fetchApi('delete', { id }).then(response => {
             if (response == 1) {
                 this.reRenderTable();
+                this.showToast('success', 'Sikeres törlés!');
                 return true;
             }
             else {
+                this.showToast('error', 'Sikertelen törlés!');
                 return false;
             }
         });
+    }
+
+    showToast(severity = 'success', msg = 'Siker!') {
+        const toast = document.getElementById('toast');
+
+        toast.innerHTML = msg;
+        toast.classList.add(severity);
+        toast.classList.add('show');
+
+        setTimeout(() => { 
+            toast.className = ''; 
+            toast.innerHTML = '';
+        }, 3000);
     }
 }
 
