@@ -79,7 +79,7 @@ function getGeocode(postion) {
 // SSE feladat
 
 if (window.EventSource) {
-    const sse = new EventSource("http://localhost:5555/stream");
+    const sse = new EventSource("https://webprog1-sse.dome.baraz.hu/stream");
     const sseResult = document.getElementById('sse-result');
 
     sse.addEventListener('message', function (event) {
