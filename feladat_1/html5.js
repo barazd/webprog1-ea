@@ -83,7 +83,7 @@ if (window.EventSource) {
     const sseResult = document.getElementById('sse-result');
 
     sse.addEventListener('message', function (event) {
-        console.log(event)
+        //console.log(event)
         sseResult.value += event.data + '\n';
     });
 }
